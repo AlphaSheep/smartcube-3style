@@ -50,7 +50,8 @@ export type BluetoothCube = {
   isConnected: () => boolean,
   setCallback: (func: any) => void,
   setEventCallback: (func: any) => void
-  getCube: () => undefined
+  getCube: () => undefined,
+  getDeviceName: () => string | undefined,
 };
 
 export function createBluetooth(): BluetoothCube {
@@ -245,6 +246,7 @@ export function createBluetooth(): BluetoothCube {
       init: init,
       opservs: [SERVICE_UUID_DATA, SERVICE_UUID_RW],
       getBatteryLevel: getBatteryLevel,
+      getName: () => deviceName,
       clear: clear
     }
   })();
@@ -526,7 +528,7 @@ export function createBluetooth(): BluetoothCube {
         }
         v2initDecoder(deviceMac, ver);
       } else {
-        v2initKey(true, false, ver);
+        v2initKey(false, false, ver);
       }
       return _service_v2data.getCharacteristics().then(function(chrcts) {
         DEBUG && console.log('[gancube] v2init find chrcts', chrcts);
@@ -876,6 +878,7 @@ export function createBluetooth(): BluetoothCube {
       opservs: [SERVICE_UUID_DATA, SERVICE_UUID_META, SERVICE_UUID_V2DATA],
       cics: GAN_CIC_LIST,
       getBatteryLevel: getBatteryLevel,
+      getName: () => deviceName,
       clear: clear
     };
   })();
@@ -1028,6 +1031,7 @@ export function createBluetooth(): BluetoothCube {
       init: init,
       opservs: [SERVICE_UUID],
       getBatteryLevel: getBatteryLevel,
+      getName: () => _deviceName,
       clear: clear
     };
   })();
@@ -1183,6 +1187,7 @@ export function createBluetooth(): BluetoothCube {
       init: init,
       opservs: [SERVICE_UUID],
       getBatteryLevel: getBatteryLevel,
+      getName: () => _deviceName,
       clear: clear
     }
   })();
@@ -1286,6 +1291,9 @@ export function createBluetooth(): BluetoothCube {
     },
     getCube: function() {
       return cube;
+    },
+    getDeviceName: function() {
+      return cube ? cube.getName() : undefined;
     }
   };
 };

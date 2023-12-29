@@ -23,6 +23,10 @@ class BTCubeService {
     this._cube.init();
   }
 
+  getDeviceName(): string | undefined {
+    return this._cube.getDeviceName();
+  }
+
   callback(state: string, moves: string[], timestamps: [number, number], source: string): void {
     if (state === 'disconnected') {
       this.disconnect();

@@ -1,0 +1,6 @@
+.env*
+dist/
+node_modules/
+.parcel-cache/
+
+.directory

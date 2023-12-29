@@ -18,6 +18,12 @@ class BTState {
   private _solved: any;
   private _macMap: any = {};
 
+  constructor() {
+    const macMap = localStorage.getItem('macMap');
+    if (macMap) {
+      this._macMap = JSON.parse(macMap);
+    }
+  }
 
   getSolved() {
     if (!this._solved) {
@@ -31,6 +37,8 @@ class BTState {
   }
 
   setMacMap(macMap) {
+    this._macMap = macMap;
+    localStorage.setItem('macMap', JSON.stringify(macMap));
   }
 }
 

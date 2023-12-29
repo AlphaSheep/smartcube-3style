@@ -32,56 +32,56 @@ function createAES128(key) {
   var ShiftTabI = [0, 13, 10, 7, 4, 1, 14, 11, 8, 5, 2, 15, 12, 9, 6, 3];
   var xtime = [];
 
-	function addRoundKey(state, rkey) {
-		for (var i = 0; i < 16; i++) {
-			state[i] ^= rkey[i];
-		}
-	}
+  function addRoundKey(state, rkey) {
+    for (var i = 0; i < 16; i++) {
+      state[i] ^= rkey[i];
+    }
+  }
 
-	function shiftSubAdd(state, rkey) {
-		var state0 = state.slice();
-		for (var i = 0; i < 16; i++) {
-			state[i] = SboxI[state0[ShiftTabI[i]]] ^ rkey[i];
-		}
-	}
+  function shiftSubAdd(state, rkey) {
+    var state0 = state.slice();
+    for (var i = 0; i < 16; i++) {
+      state[i] = SboxI[state0[ShiftTabI[i]]] ^ rkey[i];
+    }
+  }
 
-	function shiftSubAddI(state, rkey) {
-		var state0 = state.slice();
-		for (var i = 0; i < 16; i++) {
-			state[ShiftTabI[i]] = Sbox[state0[i] ^ rkey[i]];
-		}
-	}
+  function shiftSubAddI(state, rkey) {
+    var state0 = state.slice();
+    for (var i = 0; i < 16; i++) {
+      state[ShiftTabI[i]] = Sbox[state0[i] ^ rkey[i]];
+    }
+  }
 
-	function mixColumns(state) {
-		for (var i = 12; i >= 0; i -= 4) {
-			var s0 = state[i + 0];
-			var s1 = state[i + 1];
-			var s2 = state[i + 2];
-			var s3 = state[i + 3];
-			var h = s0 ^ s1 ^ s2 ^ s3;
-			state[i + 0] ^= h ^ xtime[s0 ^ s1];
-			state[i + 1] ^= h ^ xtime[s1 ^ s2];
-			state[i + 2] ^= h ^ xtime[s2 ^ s3];
-			state[i + 3] ^= h ^ xtime[s3 ^ s0];
-		}
-	}
+  function mixColumns(state) {
+    for (var i = 12; i >= 0; i -= 4) {
+      var s0 = state[i + 0];
+      var s1 = state[i + 1];
+      var s2 = state[i + 2];
+      var s3 = state[i + 3];
+      var h = s0 ^ s1 ^ s2 ^ s3;
+      state[i + 0] ^= h ^ xtime[s0 ^ s1];
+      state[i + 1] ^= h ^ xtime[s1 ^ s2];
+      state[i + 2] ^= h ^ xtime[s2 ^ s3];
+      state[i + 3] ^= h ^ xtime[s3 ^ s0];
+    }
+  }
 
-	function mixColumnsInv(state) {
-		for (var i = 0; i < 16; i += 4) {
-			var s0 = state[i + 0];
-			var s1 = state[i + 1];
-			var s2 = state[i + 2];
-			var s3 = state[i + 3];
-			var h = s0 ^ s1 ^ s2 ^ s3;
-			var xh = xtime[h];
-			var h1 = xtime[xtime[xh ^ s0 ^ s2]] ^ h;
-			var h2 = xtime[xtime[xh ^ s1 ^ s3]] ^ h;
-			state[i + 0] ^= h1 ^ xtime[s0 ^ s1];
-			state[i + 1] ^= h2 ^ xtime[s1 ^ s2];
-			state[i + 2] ^= h1 ^ xtime[s2 ^ s3];
-			state[i + 3] ^= h2 ^ xtime[s3 ^ s0];
-		}
-	}
+  function mixColumnsInv(state) {
+    for (var i = 0; i < 16; i += 4) {
+      var s0 = state[i + 0];
+      var s1 = state[i + 1];
+      var s2 = state[i + 2];
+      var s3 = state[i + 3];
+      var h = s0 ^ s1 ^ s2 ^ s3;
+      var xh = xtime[h];
+      var h1 = xtime[xtime[xh ^ s0 ^ s2]] ^ h;
+      var h2 = xtime[xtime[xh ^ s1 ^ s3]] ^ h;
+      state[i + 0] ^= h1 ^ xtime[s0 ^ s1];
+      state[i + 1] ^= h2 ^ xtime[s1 ^ s2];
+      state[i + 2] ^= h1 ^ xtime[s2 ^ s3];
+      state[i + 3] ^= h2 ^ xtime[s3 ^ s0];
+    }
+  }
 
   function init() {
     if (xtime.length != 0) {

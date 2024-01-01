@@ -1,32 +1,30 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGear } from '@fortawesome/free-solid-svg-icons';
 
-import Timer from './components/timer';
-
-import getCubeService from './services/bt-cube';
-import getAlgBuilderService from './services/alg-builder';
+import ConnectionStatus from './components/connection-status';
+import Settings from './components/settings/settings';
 
 export default function App() {
-
-  const btCubeService = getCubeService();
-  const algBuilder = getAlgBuilderService();
-
-  const onConnect = () => {
-    btCubeService.connect();
-  };
-
-  const onReset = () => {
-    algBuilder.reset();
-  }
+  const [showSettings, setShowSettings] = useState(false);
 
   return <>
     <div className="container">
-      <h1>Hello World</h1>
+      <div className="settings">
+        <ConnectionStatus />
 
-      <Timer prompt="AB" saveTime={null} />
+        <button onClick={()=>{setShowSettings(!showSettings)}}>
+          <FontAwesomeIcon icon={faGear} />
+        </button>
 
-      <button onClick={onConnect}>Connect</button>
+      </div>
 
-      <button onClick={onReset}>Reset</button>
+      {showSettings ?
+        <Settings />
+      :
+        <></>
+      }
+
     </div>
   </>
 

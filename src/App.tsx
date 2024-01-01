@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGear } from '@fortawesome/free-solid-svg-icons';
 
-import ConnectionStatus from './components/connection-status';
-import Settings from './components/settings/settings';
+import ConnectionStatusButton from './components/connection-status';
+import Settings from './components/settings';
 
 export default function App() {
   const [showSettings, setShowSettings] = useState(false);
@@ -11,7 +11,7 @@ export default function App() {
   return <>
     <div className="container">
       <div className="settings">
-        <ConnectionStatus />
+        <ConnectionStatusButton />
 
         <button onClick={()=>{setShowSettings(!showSettings)}}>
           <FontAwesomeIcon icon={faGear} />

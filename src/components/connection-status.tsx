@@ -1,45 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { selectConnectionStatus, selectDeviceName, ConnectionStatus, connect, disconnect, selectIsConnected } from '../state/connection';
 
-import getCubeService from '../services/bt-cube';
+export default function ConnectionStatusButton() {
+  const dispatch = useAppDispatch();
 
-export default function ConnectionStatus() {
-  const btCubeService = getCubeService();
-  const [isConnected, setConnected] = useState(false);
-  const [busyConnecting, setBusyConnecting] = useState(false);
-  const [deviceName, setDeviceName] = useState("");
-
-  useEffect(() => {
-    const disconnectId = btCubeService.addDisconnectCallback(() => {
-      setConnected(false);
-    });
-    return () => {
-      btCubeService.removeDisconnectCallback(disconnectId);
-    }
-  });
+  const connectionStatus = useAppSelector(selectConnectionStatus);
+  const deviceName = useAppSelector(selectDeviceName);
+  const isConnected = useAppSelector(selectIsConnected);
 
   const onConnect = () => {
-    setBusyConnecting(true);
-
-    btCubeService.connect()
-    .then(() => {
-      setBusyConnecting(false);
-      if (btCubeService.isConnected()) {
-        console.log("connected");
-        setConnected(true);
-        setDeviceName(btCubeService.getDeviceName());
-      } else {
-        console.log("not connected");
-        setConnected(false);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      setBusyConnecting(false);
-    });
+    dispatch(connect())
   };
 
   const onDisconnect = () => {
-    btCubeService.disconnect();
+    dispatch(disconnect());
   }
 
   return <>
@@ -49,7 +24,7 @@ export default function ConnectionStatus() {
         <button onClick={onDisconnect}>Disconnect</button>
       </>
       :
-        busyConnecting ?
+        (connectionStatus === ConnectionStatus.Connecting) ?
           <>
             <span>Connecting...</span>
           </>

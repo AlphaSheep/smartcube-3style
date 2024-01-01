@@ -29,7 +29,6 @@ type Settings = {
 
 
 // Initial State
-// Load settings from local storage if they exist
 const savedSettings = localStorage.getItem('settings');
 const initialState: Settings = savedSettings ? JSON.parse(savedSettings) : {
   selectedPieceType: 'corners',

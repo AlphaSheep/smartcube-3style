@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 
 export default function Timer({prompt, saveTime}) {
   const [startTime, setStart] = useState(0);
-  const [time, setTime] = useState(undefined);
+  const [time, setTime] = useState(0);
 
   const [isRunning, setRunning] = useState(false);
   const [isArmed, setArmed] = useState(false);
@@ -41,7 +41,7 @@ export default function Timer({prompt, saveTime}) {
         onClick();
       } else {
         setArmed(true);
-        setTime(undefined)
+        setTime(0)
       }
     }
   }

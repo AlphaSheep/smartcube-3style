@@ -1,4 +1,5 @@
-type RawState = number[][];
+export type CubeState = number[][];
+
 type Transform = number[][];
 
 type MoveDefinitions = {
@@ -15,7 +16,7 @@ Cube state:
   [edge permutations: UB, UR, UF, UL, BL, BR, FR, FL, DB, DR, DF, DL]
 */
 const IDENTITY_TRANSFORM: Transform = [[0,0,0,0,0,0,0,0], [0,1,2,3,4,5,6,7], [0,0,0,0,0,0,0,0,0,0,0,0], [0,1,2,3,4,5,6,7,8,9,10,11]];
-const SOLVED_CUBE: RawState = IDENTITY_TRANSFORM as RawState;
+const SOLVED_CUBE: CubeState = IDENTITY_TRANSFORM as CubeState;
 
 const MOVE_TRANSFORMS: MoveDefinitions = {
   //      CO                  CP                  EO                           EP
@@ -60,15 +61,15 @@ const E = [
   [D, B], [D, R], [D, F], [D, L]
 ];
 
-function copyState(state: RawState): RawState {
+function copyState(state: CubeState): CubeState {
   return state.map((subState) => [...subState]);
 }
 
-export function getSolvedState(): RawState {
+export function getSolvedState(): CubeState {
   return copyState(SOLVED_CUBE);
 }
 
-function applyTransform(state: RawState, transform: Transform): RawState {
+function applyTransform(state: CubeState, transform: Transform): CubeState {
   const newState = copyState(state);
   // Corner permutation
   for (let i in transform[1]) {
@@ -91,12 +92,12 @@ function applyTransform(state: RawState, transform: Transform): RawState {
   return newState;
 }
 
-export function applyMove(state: RawState, move: string): RawState {
+export function applyMove(state: CubeState, move: string): CubeState {
   const transform = MOVE_TRANSFORMS[move];
   return applyTransform(state, transform);
 }
 
-export function applyMoves(state: RawState, moves: string[]): RawState {
+export function applyMoves(state: CubeState, moves: string[]): CubeState {
   let newState = copyState(state);
   for (let move of moves) {
     newState = applyMove(newState, move);
@@ -137,17 +138,17 @@ function edge3CycleToTransform(cycle: [number, number, number]): Transform {
   return transform;
 }
 
-export function applyCorner3Cycle(state: RawState, cycle: [number, number, number]): RawState {
+export function applyCorner3Cycle(state: CubeState, cycle: [number, number, number]): CubeState {
   const transform = corner3CycleToTransform(cycle);
   return applyTransform(state, transform);
 }
 
-export function applyEdge3Cycle(state: RawState, cycle: [number, number, number]): RawState {
+export function applyEdge3Cycle(state: CubeState, cycle: [number, number, number]): CubeState {
   const transform = edge3CycleToTransform(cycle);
   return applyTransform(state, transform);
 }
 
-function rawStateToStickerString(state: RawState): string {
+function rawStateToStickerString(state: CubeState): string {
   const co = state[0], cp = state[1], eo = state[2], ep = state[3];
   const twist = (idx: number, amount: number): number => (amount + 3 - co[idx]) % 3;
   const flip = (idx: number, amount: number): number => (amount + eo[idx]) % 2;

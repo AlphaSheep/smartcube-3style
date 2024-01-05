@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import { settingsSlice, settingsPersistanceMiddleware } from "./settings";
-import { connectionSlice, connectionMiddleware } from "./connection";
+import { connectionSlice, connectionMiddleware, disconnectMiddleware } from "./connection";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +11,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
     settingsPersistanceMiddleware,
     connectionMiddleware,
+    disconnectMiddleware,
   ),
 });
 

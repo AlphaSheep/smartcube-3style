@@ -7,6 +7,7 @@ import getCubeService from '../services/bt-cube';
 export enum ConnectionStatus {
   Connecting = "Connecting",
   Connected = "Connected",
+  Disconnecting = "Disconnecting",
   Disconnected = "Disconnected",
   Error = "Error",
 }
@@ -42,6 +43,9 @@ export const connectionSlice = createSlice({
       state.deviceName = getCubeService().getDeviceName();
     },
     disconnect: (state) => {
+      state.status = ConnectionStatus.Disconnecting;
+    },
+    disconnected: (state) => {
       state.status = ConnectionStatus.Disconnected;
       state.deviceName = undefined;
     },
@@ -53,7 +57,7 @@ export const connectionSlice = createSlice({
 });
 
 // Actions
-export const { connect, connected, disconnect, errored } = connectionSlice.actions;
+export const { connect, connected, disconnect, disconnected, errored } = connectionSlice.actions;
 
 // Middleware
 export const connectionMiddleware = (store: any) => (next: any) => (action: any) => {
@@ -71,7 +75,17 @@ export const connectionMiddleware = (store: any) => (next: any) => (action: any)
 
 export const disconnectMiddleware = (store: any) => (next: any) => (action: any) => {
   next(action);
+  console.log(action.type);
+
   if (action.type === 'connection/disconnect') {
-    getCubeService().disconnect();
+    console.log('disconnecting');
+
+    getCubeService().disconnect()
+    .then(() => {
+      store.dispatch(disconnected());
+    })
+    .catch((error: Error) => {
+      store.dispatch(errored(error));
+    });
   }
 }

@@ -20,14 +20,11 @@ class BTCubeService {
   }
 
   init(): void {
-    console.log('init');
     this._algBuilder = getAlgBuilderService();
     this._cube = createBluetooth();
   }
 
   async connect(): Promise<void> {
-    console.log('connecting');
-
     this._cube.setCallback(this.moveReceivedCallback.bind(this));
 
     await this._cube.init();
@@ -37,7 +34,6 @@ class BTCubeService {
   }
 
   async disconnect(): Promise<void> {
-    console.log('disconnect');
     await this._cube.stop();
 
     this._disconnectCallbacks.forEach(cb => {
@@ -60,6 +56,8 @@ class BTCubeService {
     }
 
     if (moves.length > 0) {
+      console.log(state);
+
       this._algBuilder.addMove(moves[0], timestamps);
     }
   }

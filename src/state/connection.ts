@@ -75,11 +75,7 @@ export const connectionMiddleware = (store: any) => (next: any) => (action: any)
 
 export const disconnectMiddleware = (store: any) => (next: any) => (action: any) => {
   next(action);
-  console.log(action.type);
-
   if (action.type === 'connection/disconnect') {
-    console.log('disconnecting');
-
     getCubeService().disconnect()
     .then(() => {
       store.dispatch(disconnected());

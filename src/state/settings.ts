@@ -27,7 +27,6 @@ type Settings = {
   settings: SettingsGroup;
 }
 
-
 // Initial State
 const savedSettings = localStorage.getItem('settings');
 const initialState: Settings = savedSettings ? JSON.parse(savedSettings) : {
@@ -95,6 +94,7 @@ export const settingsPersistanceMiddleware = (store: any) => (next: any) => (act
   }
 }
 
+// Helper functions
 export function getAvailableBuffers(piece: PieceType): string[] {
   return availableBuffers[piece];
 }

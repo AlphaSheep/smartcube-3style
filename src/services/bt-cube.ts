@@ -1,4 +1,4 @@
-import { createBluetooth, BluetoothCube } from '../lib/bluetooth';
+import { createBluetooth, BluetoothCube } from '../lib/bluetooth/bluetooth';
 import getAlgBuilderService, {AlgBuilderService} from './alg-builder';
 
 type CallbackWithID = {

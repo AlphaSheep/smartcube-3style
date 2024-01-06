@@ -4,7 +4,7 @@ import { faGear } from '@fortawesome/free-solid-svg-icons';
 
 import ConnectionStatusButton from './components/connection-status';
 import Settings from './components/settings';
-import Timer from './components/timer';
+import TrainerPage from './components/trainer';
 import NotConnectedMessage from './components/not-connected-message';
 
 import './lib/cube/cube';
@@ -27,7 +27,7 @@ export default function App() {
     <div className="container">
       {showSettings ? <Settings /> : null}
       {!isConnected && !showSettings ? <NotConnectedMessage /> : null}
-      {isConnected && !showSettings ? <Timer prompt={"AB"} saveTime={undefined} /> : null}
+      {isConnected && !showSettings ? <TrainerPage /> : null}
     </div>
   </>
 

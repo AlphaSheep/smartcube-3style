@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 
-export default function Timer({prompt, saveTime}) {
+export default function Timer({saveTime}) {
   const [startTime, setStart] = useState(0);
   const [time, setTime] = useState(0);
 
@@ -66,7 +66,6 @@ export default function Timer({prompt, saveTime}) {
 
   return (
     <div className="timer-card" onClick={onClick}>
-      <p>{prompt}</p>
       <p>{getCurrentTimeString()}</p>
     </div>);
 }

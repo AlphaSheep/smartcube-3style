@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { settingsSlice, settingsPersistanceMiddleware } from "./settings";
 import { connectionSlice, connectionMiddleware, disconnectMiddleware } from "./connection";
-import { cubeSlice } from "./cube";
+import { cubeSlice, initialiseCubeBluetoothCallback } from "./cube";
 import { promptSlice, promptResetOnSettingsChangeMiddleware, addSettingsToPromptResetMiddleware } from "./prompt";
 
 const store = configureStore({
@@ -20,6 +20,8 @@ const store = configureStore({
     addSettingsToPromptResetMiddleware,
   ),
 });
+
+initialiseCubeBluetoothCallback(store);
 
 export default store;
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../hooks';
-import { selectConnectionStatus, selectDeviceName, ConnectionStatus, connect, disconnect, selectIsConnected } from '../state/connection';
+import { useAppSelector, useAppDispatch } from '../state/hooks';
+import { selectConnectionStatus, selectDeviceName, ConnectionStatus, connect, disconnect, selectIsConnected } from '../state/connection.duck';
 
 export default function ConnectionStatusButton() {
   const dispatch = useAppDispatch();

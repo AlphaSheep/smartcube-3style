@@ -7,7 +7,7 @@ import {
   selectIncludeInverses,
   TrainingSettings,
   selectSettingsForCurrentPiece
-} from "./settings";
+} from "./settings.duck";
 
 // Helper functions
 function shuffle(array: any[]): Array<any>{
@@ -99,6 +99,6 @@ export const addSettingsToPromptResetMiddleware = (store: any) => (next: any) =>
 export const promptResetOnSettingsChangeMiddleware = (store: any) => (next: any) => (action: any) => {
   next(action);
   if (action.type.startsWith('settings/')) {
-    store.dispatch(resetPrompt);
+    store.dispatch(resetPrompt());
   }
 }

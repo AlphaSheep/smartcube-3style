@@ -1,6 +1,6 @@
 import { Store } from '@reduxjs/toolkit';
 import { createBluetooth, BluetoothCube } from '../lib/bluetooth/bluetooth';
-import { addMove } from '../state/cube';
+import { addMove } from '../state/cube.duck';
 import { RootState } from '../state/store';
 
 type MoveReceivedCallback = (state: string, moves: string[], timestamps: [number, number], source: string) => void;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppSelector, useAppDispatch } from '../hooks';
+import { useAppSelector, useAppDispatch } from '../state/hooks';
 import {
   PieceType,
   getAvailableBuffers,
@@ -14,7 +14,7 @@ import {
   setLetterScheme,
   setSelectedLetters,
   setSelectedPieceType
-} from '../state/settings';
+} from '../state/settings.duck';
 
 
 export default function Settings() {

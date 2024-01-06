@@ -7,10 +7,9 @@ import Settings from './components/settings';
 import Timer from './components/timer';
 import NotConnectedMessage from './components/not-connected-message';
 
-
 import './lib/cube/cube';
-import { useAppSelector } from './hooks';
-import { selectIsConnected } from './state/connection';
+import { useAppSelector } from './state/hooks';
+import { selectIsConnected } from './state/connection.duck';
 
 export default function App() {
   const [showSettings, setShowSettings] = useState(false);

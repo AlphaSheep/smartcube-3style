@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-import getCubeService from '../services/bt-cube';
+import getCubeService from '../services/bluetooth-cube';
 
 // Type definitions
 export enum ConnectionStatus {

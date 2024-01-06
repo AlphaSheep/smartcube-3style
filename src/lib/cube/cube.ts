@@ -65,6 +65,20 @@ function copyState(state: CubeState): CubeState {
   return state.map((subState) => [...subState]);
 }
 
+export function areStatesEqual(state1: CubeState, state2: CubeState): boolean {
+  for (let i = 0; i < 4; i++) {
+    if (state1[i].length !== state2[i].length) {
+      return false;
+    }
+    for (let j = 0; j < state1[i].length; j++) {
+      if (state1[i][j] !== state2[i][j]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 export function getSolvedState(): CubeState {
   return copyState(SOLVED_CUBE);
 }

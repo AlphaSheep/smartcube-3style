@@ -7,7 +7,7 @@ import {
   selectIncludeInverses,
   TrainingSettings,
   selectSettingsForCurrentPiece
-} from "../state/settings";
+} from "./settings";
 
 // Helper functions
 function shuffle(array: any[]): Array<any>{
@@ -23,7 +23,7 @@ function shuffle(array: any[]): Array<any>{
   return array;
 }
 
-export function generatePrompts(state?: TrainingSettings): string[] {
+function generatePrompts(state?: TrainingSettings): string[] {
   if (!state) {
     console.log('No settings provided to generate prompts');
     return [];
@@ -74,17 +74,17 @@ export const promptSlice = createSlice({
     resetPrompt: (state, action: PayloadAction<TrainingSettings | undefined>) => {
       state.prompts = generatePrompts(action.payload);
     },
-    nextPrompt: (state) => {
+    goToNextPrompt: (state) => {
       state.currentPromptIndex++;
     },
-    previousPrompt: (state) => {
+    goToPreviousPrompt: (state) => {
       state.currentPromptIndex--;
     },
   },
 });
 
 // Actions
-export const { resetPrompt, nextPrompt, previousPrompt } = promptSlice.actions;
+export const { resetPrompt, goToNextPrompt, goToPreviousPrompt } = promptSlice.actions;
 
 //Middleware
 export const addSettingsToPromptResetMiddleware = (store: any) => (next: any) => (action: any) => {

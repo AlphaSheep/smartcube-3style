@@ -16,7 +16,6 @@ export type TimestampedMove = {
   timestamps: [number, number];
 };
 
-
 // Initial State
 const initialState: Cube = {
   cubeState: getSolvedState(),

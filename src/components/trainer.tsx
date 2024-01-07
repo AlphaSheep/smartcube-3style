@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../state/hooks';
 import Timer from './timer';
 import { resetPrompt } from '../state/prompt.duck';
 import Prompt from './prompt';
+import Moves from './moves';
 
 export default function TrainerPage() {
   const dispatch = useAppDispatch();
@@ -15,5 +16,6 @@ export default function TrainerPage() {
   return <div className='trainer-page'>
     <Prompt />
     <Timer saveTime={undefined} />
+    <Moves />
   </div>
 }

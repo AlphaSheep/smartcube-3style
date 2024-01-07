@@ -6,6 +6,80 @@ type MoveDefinitions = {
   [name: string]: Transform
 };
 
+type Face = "U" | "R" | "F" | "D" | "L" | "B";
+type Direction = number;
+
+// Axis ordering
+const AXIS_ORDER = {
+  "U": 0,
+  "R": 1,
+  "F": 2,
+  "D": 0,
+  "L": 1,
+  "B": 2,
+}
+
+export class Move {
+  private _face: Face;
+  private _direction: Direction;
+
+  constructor(moveStr: Face | string, direction?: Direction) {
+    this._face = moveStr[0] as Face;
+    if (direction === undefined) {
+      if (moveStr.length === 1) {
+        this._direction = 1;
+      } else if (moveStr[1] === "2") {
+        this._direction = 2;
+      } else if (moveStr[1] === "'") {
+        this._direction = 3;
+      } else {
+        throw new Error("Invalid move: " + moveStr);
+      }
+    } else {
+      this._direction = direction;
+    }
+  }
+
+  toString(): string {
+    const dir = this._direction % 4;
+    if (dir === 1) {
+      return this._face;
+    } else if (dir === 2) {
+      return this._face + "2";
+    } else if (dir === 3) {
+      return this._face + "'";
+    } else {
+      return "";
+    }
+  }
+
+  getFace(): Face {
+    return this._face;
+  }
+
+  getDirection(): Direction {
+    return this._direction;
+  }
+
+  getAxis(): number {
+    return AXIS_ORDER[this._face];
+  }
+
+  cancelWith(move: Move): Move | null {
+    if (this._face !== move._face) {
+      throw new Error("Can't cancel moves on different faces");
+    }
+
+    const direction = (this._direction + move._direction) % 4;
+
+    if (direction === 0) {
+      return null;
+    } else {
+      return new Move(this._face, direction);
+    }
+  }
+}
+
 /*
 Cube state:
   [corner orientations: UBL, UBR, UFR, UFL, DBL, DBR, DFR, DFL.
@@ -108,13 +182,16 @@ function applyTransform(state: CubeState, transform: Transform): CubeState {
 
 export function applyMove(state: CubeState, move: string): CubeState {
   const transform = MOVE_TRANSFORMS[move];
+  if (!transform) {
+    throw new Error("Invalid move: |" + move + "|");
+  }
   return applyTransform(state, transform);
 }
 
-export function applyMoves(state: CubeState, moves: string[]): CubeState {
+export function applyMoves(state: CubeState, moves: Move[]): CubeState {
   let newState = copyState(state);
   for (let move of moves) {
-    newState = applyMove(newState, move);
+    newState = applyMove(newState, move.toString());
   }
   return newState;
 }
@@ -162,7 +239,7 @@ export function applyEdge3Cycle(state: CubeState, cycle: [number, number, number
   return applyTransform(state, transform);
 }
 
-function rawStateToStickerString(state: CubeState): string {
+export function rawStateToStickerString(state: CubeState): string {
   const co = state[0], cp = state[1], eo = state[2], ep = state[3];
   const twist = (idx: number, amount: number): number => (amount + 3 - co[idx]) % 3;
   const flip = (idx: number, amount: number): number => (amount + eo[idx]) % 2;
@@ -203,47 +280,37 @@ function rawStateToStickerString(state: CubeState): string {
   return stickers.join("");
 }
 
-function testApplyMove() {
-  console.log("---------------------------------");
+export function simplifyAlg(moves: Move[]): Move[] {
+  // TODO: This feels very inefficient, surely there's a better way to do this
 
-  console.log("Testing");
-  let state = getSolvedState();
-  console.log(rawStateToStickerString(state), "\n", state);
+  let simplifiedMoves: (Move | null)[] = [...moves];
 
-  state = applyMove(state, "U");
-  console.log("U\n", rawStateToStickerString(state), "\n", state);
+  for (let i=0; i < simplifiedMoves.length; i++) {
+    let j = i + 1;
+    while (j < simplifiedMoves.length) {
+      const move = simplifiedMoves[i];
+      const nextMove = simplifiedMoves[j];
 
-  state = applyMove(state, "R'");
-  console.log("U R'\n", rawStateToStickerString(state), "\n", state);
+      if (nextMove) {
+        if (!move || move.getAxis() !== nextMove.getAxis()) {
+          // If the current move is null, we have already cancelled it
+          // If the moves are on a different axis, we can't cancel any further
+          break;
+        }
+        if (move.getFace() === nextMove.getFace()) {
+          // If the moves are on the same face, we can cancel them
+          simplifiedMoves[i] = move.cancelWith(nextMove);
+          simplifiedMoves[j] = null;
+        }
+      }
+      j++;
+    }
+  }
 
-  state = applyMove(state, "D");
-  console.log("U R' D\n", rawStateToStickerString(state), "\n", state);
-
-  state = applyMove(state, "R");
-  console.log("U R' D R\n", rawStateToStickerString(state), "\n", state);
-
-  state = applyMove(state, "U'");
-  console.log("U R' D R U'\n", rawStateToStickerString(state), "\n", state);
-
-  state = applyMove(state, "R'");
-  console.log("U R' D R U' R'\n", rawStateToStickerString(state), "\n", state);
-
-  state = applyMove(state, "D'");
-  console.log("U R' D R U' R' D'\n", rawStateToStickerString(state), "\n", state);
-
-  state = applyMove(state, "R");
-  console.log("U R' D R U' R' D' R\n", rawStateToStickerString(state), "\n", state);
-}
-
-function testApply3Cycle() {
-  console.log("---------------------------------");
-  console.log("Testing 3-cycle");
-
-  let state = getSolvedState();
-
-  state = applyTransform(state, corner3CycleToTransform([2, 6, 1])); // UFR -> LDF -> UBR
-  console.log("UFR -> LDF -> UBR\n", rawStateToStickerString(state), "\n", state);
-
-  state = applyTransform(state, edge3CycleToTransform([20, 1, 5])); // DF -> UR -> LF
-  console.log("DF -> UR -> LF\n", rawStateToStickerString(state), "\n", state);
+  simplifiedMoves = simplifiedMoves.filter((move) => move !== null);
+  if (simplifiedMoves.length !== moves.length) {
+    return simplifyAlg(simplifiedMoves as Move[]);
+  } else {
+    return simplifiedMoves as Move[];
+  }
 }

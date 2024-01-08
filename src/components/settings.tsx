@@ -6,11 +6,13 @@ import {
   getAvailablePieceTypes,
   selectBuffer,
   selectIncludeInverses,
+  selectIncludeTwists,
   selectLetterScheme,
   selectSelectedLetters,
   selectSelectedPieceType,
   setBuffer,
   setIncludeInverses,
+  setIncludeTwists,
   setLetterScheme,
   setSelectedLetters,
   setSelectedPieceType
@@ -26,6 +28,7 @@ export default function Settings() {
     <div className="settings-page">
       <PieceTypeSelector/>
       <IncludeInverses/>
+      <IncludeTwists/>
       <BufferSettings/>
       <LetterScheme/>
       <SelectedLetters/>
@@ -65,6 +68,23 @@ function IncludeInverses() {
     <label>
       <input type="checkbox" onChange={onUpdate} checked={includeInverses}/>
       Include inverses
+    </label>
+  </div>;
+}
+
+function IncludeTwists() {
+  const dispatch = useAppDispatch();
+
+  const includeTwists = useAppSelector(selectIncludeTwists);
+
+  const onUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setIncludeTwists(event.target.checked));
+  }
+
+  return <div className="include-twists">
+    <label>
+      <input type="checkbox" onChange={onUpdate} checked={includeTwists}/>
+      Include twists
     </label>
   </div>;
 }

@@ -10,6 +10,7 @@ const availableBuffers = {
 // Type definitions
 export type TrainingSettings = {
   includeInverses: boolean;
+  includeTwists: boolean;
   letterScheme: string;
   buffer: string;
   selectedLetters: string[];
@@ -34,12 +35,14 @@ const initialState: Settings = savedSettings ? JSON.parse(savedSettings) : {
   settings: {
     corners: {
       includeInverses: true,
+      includeTwists: false,
       letterScheme: 'ABCDEFGHIJKLMNOPQRSTUVWX',
       buffer: 'UFR',
       selectedLetters: []
     },
     edges: {
       includeInverses: true,
+      includeTwists: false,
       letterScheme: 'ABCDEFGHIJKLMNOPQRSTUVWX',
       buffer: 'UF',
       selectedLetters: []
@@ -52,6 +55,7 @@ export const selectSettings = (state: RootState) => state.settings;
 export const selectSelectedPieceType = (state: RootState) => state.settings.selectedPieceType;
 export const selectSettingsForCurrentPiece = (state: RootState) => state.settings.settings[selectSelectedPieceType(state)];
 export const selectIncludeInverses = (state: RootState) => selectSettingsForCurrentPiece(state).includeInverses;
+export const selectIncludeTwists = (state: RootState) => selectSettingsForCurrentPiece(state).includeTwists;
 export const selectLetterScheme = (state: RootState) => selectSettingsForCurrentPiece(state).letterScheme;
 export const selectBuffer = (state: RootState) => selectSettingsForCurrentPiece(state).buffer;
 export const selectSelectedLetters = (state: RootState) => selectSettingsForCurrentPiece(state).selectedLetters;
@@ -70,6 +74,9 @@ export const settingsSlice = createSlice({
     setIncludeInverses: (state, action: PayloadAction<boolean>) => {
       state.settings[state.selectedPieceType].includeInverses = action.payload;
     },
+    setIncludeTwists: (state, action: PayloadAction<boolean>) => {
+      state.settings[state.selectedPieceType].includeTwists = action.payload;
+    },
     setLetterScheme: (state, action: PayloadAction<string>) => {
       state.settings[state.selectedPieceType].letterScheme = action.payload;
     },
@@ -83,7 +90,15 @@ export const settingsSlice = createSlice({
 });
 
 // Actions
-export const { setSelectedPieceType, setSettingsForPiece, setIncludeInverses, setLetterScheme, setBuffer, setSelectedLetters } = settingsSlice.actions;
+export const {
+  setSelectedPieceType,
+  setSettingsForPiece,
+  setIncludeInverses,
+  setIncludeTwists,
+  setLetterScheme,
+  setBuffer,
+  setSelectedLetters,
+} = settingsSlice.actions;
 
 // Middleware
 export const settingsPersistanceMiddleware = (store: any) => (next: any) => (action: any) => {

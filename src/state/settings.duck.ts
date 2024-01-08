@@ -101,7 +101,7 @@ export const {
 } = settingsSlice.actions;
 
 // Middleware
-export const settingsPersistanceMiddleware = (store: any) => (next: any) => (action: any) => {
+export const settingsPersistenceMiddleware = (store: any) => (next: any) => (action: any) => {
   // Save the settings to local storage after every action
   next(action);
   if (action.type.startsWith('settings/')) {

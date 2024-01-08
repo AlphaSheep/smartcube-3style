@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { settingsSlice, settingsPersistanceMiddleware } from "./settings.duck";
+import { settingsSlice, settingsPersistenceMiddleware } from "./settings.duck";
 import { connectionSlice, connectionMiddleware, disconnectMiddleware } from "./connection.duck";
 import { cubeSlice, initialiseCubeBluetoothCallback } from "./cube.duck";
 import { promptSlice, promptResetOnSettingsChangeMiddleware, addSettingsToPromptResetMiddleware } from "./prompt.duck";
@@ -13,7 +13,7 @@ const store = configureStore({
     prompt: promptSlice.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
-    settingsPersistanceMiddleware,
+    settingsPersistenceMiddleware,
     connectionMiddleware,
     disconnectMiddleware,
     promptResetOnSettingsChangeMiddleware,

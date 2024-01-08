@@ -1,8 +1,10 @@
 import { createSlice, EnhancedStore, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 
-import { getSolvedState, applyMove, areStatesEqual, CubeState } from '../lib/cube/cube';
+import { getSolvedState, applyMove, areStatesEqual, CubeState, applyCorner3Cycle, applyEdge3Cycle } from '../lib/cube/cube';
 import getCubeService from "../services/bluetooth-cube";
+import { getInverse3CycleForCurrentPrompt, selectCurrentPrompt } from './prompt.duck';
+import { selectSelectedPieceType } from './settings.duck';
 
 // Type definitions
 export type Cube = {
@@ -42,14 +44,40 @@ export const cubeSlice = createSlice({
       state.moves = [];
       state.target = undefined;
     },
-    setTarget: (state, action: PayloadAction<CubeState>) => {
+    setTarget: (state, action: PayloadAction<CubeState | undefined>) => {
       state.target = action.payload;
     }
   },
 });
 
 // Actions
-export const { addMove, resetCube } = cubeSlice.actions;
+export const { addMove, resetCube, setTarget } = cubeSlice.actions;
+
+// Middleware
+export const addStateToSetTargetMiddleware = (store: any) => (next: any) => (action: any) => {
+  if (action.type === setTarget.type) {
+    const cycle = getInverse3CycleForCurrentPrompt(store.getState());
+    console.log("cycle", cycle);
+
+    if (cycle) {
+      const pieceType = selectSelectedPieceType(store.getState());
+      const cubeState = selectCubeState(store.getState()).cubeState;
+      let target: CubeState;
+      switch (pieceType) {
+        case 'corners':
+          target = applyCorner3Cycle(cubeState, cycle);
+          break;
+        case 'edges':
+          target = applyEdge3Cycle(cubeState, cycle);
+          break;
+        default:
+          throw new Error('Invalid piece type');
+      }
+      action.payload = target;
+    }
+  }
+  return next(action);
+}
 
 // Helpers
 export function initialiseCubeBluetoothCallback(store: EnhancedStore) {

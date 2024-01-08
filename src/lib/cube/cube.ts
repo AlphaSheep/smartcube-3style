@@ -122,6 +122,24 @@ const CORNER_STICKER_ORIENTATION_MAP = [0, 0, 0, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2
 const EDGE_STICKER_PERMUTATION_MAP = [0, 1, 2, 3, 3, 7, 11, 4, 2, 5, 10, 6, 1, 5, 9, 6, 0, 4, 8, 5, 10, 9, 8, 11];
 const EDGE_STICKER_ORIENTATION_MAP = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0];
 
+const CORNER_STICKER_ORDER = [
+  'UBL', 'UBR', 'UFR', 'UFL',
+  'LUB', 'LUF', 'LDF', 'LDB',
+  'FUL', 'FUR', 'FDR', 'FDL',
+  'RUF', 'RUB', 'RDB', 'RDF',
+  'BUR', 'BUL', 'BDL', 'BDR',
+  'DFL', 'DFR', 'DRB', 'DRL'
+];
+
+const EDGE_STICKER_ORDER = [
+  'UB', 'UR', 'UF', 'UL',
+  'LU', 'LF', 'LD', 'LB',
+  'FU', 'FR', 'FD', 'FL',
+  'RU', 'RB', 'RD', 'RF',
+  'BU', 'BL', 'BD', 'BR',
+  'DF', 'DR', 'DB', 'DL'
+];
+
 // Sticker colours per piece
 // These are single characters because otherwise the rawStateToStickerString function would be even messier
 const U="U", R="R", F="F", D="D", L="L", B="B";
@@ -313,4 +331,12 @@ export function simplifyAlg(moves: Move[]): Move[] {
   } else {
     return simplifiedMoves as Move[];
   }
+}
+
+export function cornerStickerToIndex(sticker: string): number {
+  return CORNER_STICKER_ORDER.indexOf(sticker);
+}
+
+export function edgeStickerToIndex(sticker: string): number {
+  return EDGE_STICKER_ORDER.indexOf(sticker);
 }

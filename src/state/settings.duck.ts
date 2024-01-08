@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
+import { cornerStickerToIndex, edgeStickerToIndex } from '../lib/cube/cube';
 
 // Constants
-const availableBuffers = {
+const AVAILABLE_BUFFERS = {
   corners: ['UFR', 'UFL', 'UBL', 'UBR', 'DFR', 'DFL', 'DBL', 'DBR'],
   edges: ['UF', 'UL', 'UB', 'UR', 'FL', 'FR', 'DF', 'DL', 'DB', 'DR']
 };
@@ -58,6 +59,7 @@ export const selectIncludeInverses = (state: RootState) => selectSettingsForCurr
 export const selectIncludeTwists = (state: RootState) => selectSettingsForCurrentPiece(state).includeTwists;
 export const selectLetterScheme = (state: RootState) => selectSettingsForCurrentPiece(state).letterScheme;
 export const selectBuffer = (state: RootState) => selectSettingsForCurrentPiece(state).buffer;
+export const selectBufferIndex = (state: RootState) => pieceToIndex(selectBuffer(state), selectSelectedPieceType(state));
 export const selectSelectedLetters = (state: RootState) => selectSettingsForCurrentPiece(state).selectedLetters;
 
 // Slice
@@ -111,9 +113,20 @@ export const settingsPersistenceMiddleware = (store: any) => (next: any) => (act
 
 // Helper functions
 export function getAvailableBuffers(piece: PieceType): string[] {
-  return availableBuffers[piece];
+  return AVAILABLE_BUFFERS[piece];
 }
 
 export function getAvailablePieceTypes(): (PieceType)[] {
-  return Object.keys(availableBuffers) as PieceType[];
+  return Object.keys(AVAILABLE_BUFFERS) as PieceType[];
+}
+
+function pieceToIndex(piece: string, pieceType: PieceType): number {
+  switch (pieceType) {
+    case 'corners':
+      return cornerStickerToIndex(piece);
+    case 'edges':
+      return edgeStickerToIndex(piece);
+    default:
+      throw new Error('Invalid piece type');
+  }
 }

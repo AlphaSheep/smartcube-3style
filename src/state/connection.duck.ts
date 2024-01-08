@@ -15,7 +15,7 @@ export enum ConnectionStatus {
 type ConnectionState = {
   status: ConnectionStatus;
   deviceName?: string;
-  error?: Error;
+  error?: string;
 };
 
 // Initial State
@@ -51,7 +51,7 @@ export const connectionSlice = createSlice({
     },
     errored: (state, action: PayloadAction<Error>) => {
       state.status = ConnectionStatus.Error;
-      state.error = action.payload;
+      state.error = action.payload.message;
     },
   },
 });

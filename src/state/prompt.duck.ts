@@ -6,8 +6,11 @@ import {
   selectLetterScheme,
   selectIncludeInverses,
   TrainingSettings,
-  selectSettingsForCurrentPiece
+  selectSettingsForCurrentPiece,
+  selectBuffer,
+  selectBufferIndex
 } from "./settings.duck";
+import { setTarget } from './cube.duck';
 
 // Helper functions
 function shuffle(array: any[]): Array<any>{
@@ -23,12 +26,7 @@ function shuffle(array: any[]): Array<any>{
   return array;
 }
 
-function generatePrompts(state?: TrainingSettings): string[] {
-  if (!state) {
-    console.log('No settings provided to generate prompts');
-    return [];
-  }
-
+function generatePrompts(state: TrainingSettings): string[] {
   const letters = state.selectedLetters;
   const availableLetters = state.letterScheme.split('');
   const includeInverses = state.includeInverses;
@@ -46,6 +44,24 @@ function generatePrompts(state?: TrainingSettings): string[] {
   }
 
   return shuffle(prompts);
+}
+
+export function getInverse3CycleForCurrentPrompt(state: RootState): [number, number, number] | undefined {
+  const prompt = selectCurrentPrompt(state);
+  const letterScheme = selectLetterScheme(state);
+  const bufferIndex = selectBufferIndex(state);
+
+  if (!prompt) {
+    return undefined;
+  }
+
+  const firstIndex = letterScheme.indexOf(prompt[0]);
+  const secondIndex = letterScheme.indexOf(prompt[1]);
+
+  console.log("prompt", prompt);
+  console.log("cycle", [bufferIndex, secondIndex, firstIndex]);
+
+  return [bufferIndex, secondIndex, firstIndex];
 }
 
 // Type definitions
@@ -72,7 +88,11 @@ export const promptSlice = createSlice({
   initialState,
   reducers: {
     resetPrompt: (state, action: PayloadAction<TrainingSettings | undefined>) => {
+      if (!action.payload) {
+        throw new Error('Settings must be defined to reset prompt');
+      }
       state.prompts = generatePrompts(action.payload);
+      state.currentPromptIndex = 0;
     },
     goToNextPrompt: (state) => {
       state.currentPromptIndex++;
@@ -88,17 +108,15 @@ export const { resetPrompt, goToNextPrompt, goToPreviousPrompt } = promptSlice.a
 
 //Middleware
 export const addSettingsToPromptResetMiddleware = (store: any) => (next: any) => (action: any) => {
-  if (action.type === 'prompt/resetPrompt') {
+  if (action.type === resetPrompt.type) {
     action.payload = selectSettingsForCurrentPiece(store.getState());
-    console.log("settings added to prompt/reset action");
   }
-
   next(action);
 }
 
-export const promptResetOnSettingsChangeMiddleware = (store: any) => (next: any) => (action: any) => {
+export const setTargetOnPromptChangeMiddleware = (store: any) => (next: any) => (action: any) => {
   next(action);
-  if (action.type.startsWith('settings/')) {
-    store.dispatch(resetPrompt());
+  if (action.type.startsWith('prompt/')) {
+    store.dispatch(setTarget());
   }
 }

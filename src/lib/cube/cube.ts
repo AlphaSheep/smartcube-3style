@@ -1,3 +1,5 @@
+import { PieceType } from "../../state/settings.duck";
+
 export type CubeState = number[][];
 
 type Transform = number[][];
@@ -119,7 +121,7 @@ const MOVE_TRANSFORMS: MoveDefinitions = {
 const CORNER_STICKER_PERMUTATION_MAP = [0, 1, 2, 3, 0, 3, 7, 4, 3, 2, 6, 7, 2, 1, 5, 6, 1, 0, 4, 5, 7, 6, 5, 4];
 const CORNER_STICKER_ORIENTATION_MAP = [0, 0, 0, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 0, 0, 0, 0];
 // Edges: UB, UR, UF, UL, LU, LF, LD, LB, FU, FR, FD, FL, RU, RB, RD, RF, BU, BL, BD, BR, DF, DR, DB, DL
-const EDGE_STICKER_PERMUTATION_MAP = [0, 1, 2, 3, 3, 7, 11, 4, 2, 5, 10, 6, 1, 5, 9, 6, 0, 4, 8, 5, 10, 9, 8, 11];
+const EDGE_STICKER_PERMUTATION_MAP = [0, 1, 2, 3,  3, 7, 11, 4,  2, 6, 10, 7,  1, 5, 9, 6,  0, 4, 8, 5,  10, 9, 8, 11];
 const EDGE_STICKER_ORIENTATION_MAP = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0];
 
 const CORNER_STICKER_ORDER = [
@@ -219,7 +221,6 @@ function corner3CycleToTransform(cycle: [number, number, number]): Transform {
   const cp = cycle.map((i) => CORNER_STICKER_PERMUTATION_MAP[i]);
   const co = cycle.map((i) => CORNER_STICKER_ORIENTATION_MAP[i]);
 
-  console.log(cp, co);
   transform[1][cp[0]] = cp[1];
   transform[1][cp[1]] = cp[2];
   transform[1][cp[2]] = cp[0];
@@ -339,4 +340,38 @@ export function cornerStickerToIndex(sticker: string): number {
 
 export function edgeStickerToIndex(sticker: string): number {
   return EDGE_STICKER_ORDER.indexOf(sticker);
+
+}
+export function stickerToIndex(sticker: string, pieceType: PieceType): number {
+  switch (pieceType) {
+    case "corners":
+      return cornerStickerToIndex(sticker);
+    case "edges":
+      return edgeStickerToIndex(sticker);
+    default:
+      throw new Error("Invalid piece type: " + pieceType);
+  }
+}
+
+export function getIndicesForSharedStickers(stickerIndex: number, pieceType: PieceType): number[] {
+  let stickerToPieceMap: number[];
+  switch (pieceType) {
+    case "corners":
+      stickerToPieceMap = CORNER_STICKER_PERMUTATION_MAP;
+      break;
+    case "edges":
+      stickerToPieceMap = EDGE_STICKER_PERMUTATION_MAP;
+      break;
+    default:
+      throw new Error("Invalid piece type: " + pieceType);
+  }
+
+  const pieceIndex = stickerToPieceMap[stickerIndex];
+  let indices: number[] = [];
+  stickerToPieceMap.forEach((piece, index) => {
+    if (piece === pieceIndex) {
+      indices.push(index);
+    }
+  });
+  return indices;
 }

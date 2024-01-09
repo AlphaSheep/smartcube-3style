@@ -10,6 +10,7 @@ import NotConnectedMessage from './components/not-connected-message';
 import './lib/cube/cube';
 import { useAppSelector } from './state/hooks';
 import { selectIsConnected } from './state/connection.duck';
+import { Footer } from './components/footer';
 
 export default function App() {
   const [showSettings, setShowSettings] = useState(false);
@@ -28,6 +29,10 @@ export default function App() {
       {showSettings ? <Settings /> : null}
       {!isConnected && !showSettings ? <NotConnectedMessage /> : null}
       {isConnected && !showSettings ? <TrainerPage /> : null}
+    </div>
+
+    <div className="footer">
+      <Footer />
     </div>
   </>
 

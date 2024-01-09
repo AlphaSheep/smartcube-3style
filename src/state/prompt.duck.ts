@@ -11,6 +11,7 @@ import {
   selectBufferIndex
 } from "./settings.duck";
 import { setTarget } from './cube.duck';
+import { getIndicesForSharedStickers, stickerToIndex } from '../lib/cube/cube';
 
 // Helper functions
 function shuffle(array: any[]): Array<any>{
@@ -26,16 +27,27 @@ function shuffle(array: any[]): Array<any>{
   return array;
 }
 
-function generatePrompts(state: TrainingSettings): string[] {
-  const letters = state.selectedLetters;
-  const availableLetters = state.letterScheme.split('');
-  const includeInverses = state.includeInverses;
+export function generatePrompts(settings: TrainingSettings): string[] {
+  const letters = settings.selectedLetters;
+  const availableLetters = settings.letterScheme.split('');
+  const includeInverses = settings.includeInverses;
 
-  const prompts = letters?.map((first) =>
-    availableLetters.map((second) =>
+  const prompts = letters?.map((first) => {
+    const bufferIndex = stickerToIndex(settings.buffer, settings.pieceType);
+    const firstIndex = settings.letterScheme.indexOf(first);
+
+    const bufferIndices = getIndicesForSharedStickers(bufferIndex, settings.pieceType);
+    const firstPieceIndices = settings.includeTwists ? [firstIndex] :
+      getIndicesForSharedStickers(firstIndex, settings.pieceType);
+    const exclude = bufferIndices.concat(firstPieceIndices);
+    const secondLetters = availableLetters.filter((second, index) =>
+      !exclude.includes(index)
+    );
+
+    return secondLetters.map((second) =>
       `${first}${second}`
     )
-  ).flat();
+  }).flat();
 
   if (includeInverses) {
     prompts.push(...prompts.map((prompt) =>
@@ -58,10 +70,7 @@ export function getInverse3CycleForCurrentPrompt(state: RootState): [number, num
   const firstIndex = letterScheme.indexOf(prompt[0]);
   const secondIndex = letterScheme.indexOf(prompt[1]);
 
-  console.log("prompt", prompt);
-  console.log("cycle", [bufferIndex, secondIndex, firstIndex]);
-
-  return [bufferIndex, secondIndex, firstIndex];
+  return [bufferIndex, firstIndex, secondIndex];
 }
 
 // Type definitions

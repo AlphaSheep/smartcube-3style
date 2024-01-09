@@ -10,6 +10,7 @@ const AVAILABLE_BUFFERS = {
 
 // Type definitions
 export type TrainingSettings = {
+  pieceType: PieceType;
   includeInverses: boolean;
   includeTwists: boolean;
   letterScheme: string;
@@ -35,6 +36,7 @@ const initialState: Settings = savedSettings ? JSON.parse(savedSettings) : {
   selectedPieceType: 'corners',
   settings: {
     corners: {
+      pieceType: 'corners',
       includeInverses: true,
       includeTwists: false,
       letterScheme: 'ABCDEFGHIJKLMNOPQRSTUVWX',
@@ -42,6 +44,7 @@ const initialState: Settings = savedSettings ? JSON.parse(savedSettings) : {
       selectedLetters: []
     },
     edges: {
+      pieceType: 'edges',
       includeInverses: true,
       includeTwists: false,
       letterScheme: 'ABCDEFGHIJKLMNOPQRSTUVWX',

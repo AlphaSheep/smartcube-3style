@@ -88,9 +88,9 @@ export const addStateToSetTargetMiddleware = (store: any) => (next: any) => (act
   return next(action);
 }
 
-// Helpers
+// Initialisation
 export function initialiseCubeBluetoothCallback(store: EnhancedStore) {
-  getCubeService().setCallback((state, moves, timestamps, source) => {
+  getCubeService().setMoveCallback((state, moves, timestamps, source) => {
     store.dispatch(addMove({ move: moves[0].trim(), timestamps }));
   });
 }

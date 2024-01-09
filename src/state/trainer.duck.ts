@@ -2,6 +2,7 @@ import { createSlice, EnhancedStore, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
 import { addMove, resetCube, selectIsReachedTarget, selectMoves, setTarget, TimestampedMove } from './cube.duck';
 import { goToNextPrompt, goToPreviousPrompt, resetPrompt, selectCurrentPrompt } from './prompt.duck';
+import getCubeService from '../services/bluetooth-cube';
 
 // Type definitions
 type TrainingResult = {
@@ -71,6 +72,14 @@ export const {
 } = trainerSlice.actions;
 
 // Middleware
+export const ignoreCommandUnlessActiveMiddleware = (store: any) => (next: any) => (action: any) => {
+  const isActive = selectTrainerActive(store.getState());
+  if (!isActive && [addSuccessResult.type, addSkippedResult.type, repeatResult.type].includes(action.type)) {
+    return;
+  }
+  next(action);
+}
+
 export const startTrainingMiddleware = (store: any) => (next: any) => (action: any) => {
   if (action.type === startTraining.type) {
     store.dispatch(resetCube());
@@ -141,4 +150,15 @@ export const resetOnSettingsChangeMiddleware = (store: any) => (next: any) => (a
   if (action.type.startsWith('settings/')) {
     store.dispatch(startTraining());
   }
+}
+
+// Initialisation
+export function initialiseSkipRepeatCallbacks(store: any) {
+  const cubeService = getCubeService();
+  cubeService.setSkipCallback(() => {
+    store.dispatch(addSkippedResult());
+  });
+  cubeService.setRepeatCallback(() => {
+    store.dispatch(repeatResult());
+  });
 }

@@ -1,6 +1,6 @@
-# BT 3-style
+# Smart Cube 3-style
 
-Work in progress toward a 3-style method trainer for bluetooth smart cubes.
+A minimalist 3-style method trainer for bluetooth smart cubes.
 
 # Getting Started
 
@@ -13,3 +13,5 @@ Click the `Connect` button to connect to your bluetooth cube.
 # Credits
 
 Huge thanks to Chen Shuang's [cstimer](https://github.com/cs0x7f/cstimer) for the bluetooth cube connection library.
+
+This project is licensed under the GPL license version 3 or later in the spirit of collaboration and sharing.

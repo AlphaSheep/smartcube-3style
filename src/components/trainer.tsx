@@ -6,6 +6,7 @@ import { resetPrompt } from '../state/prompt.duck';
 import Prompt from './prompt';
 import Moves from './moves';
 import { selectTrainerActive, startTraining } from '../state/trainer.duck';
+import Summary from './summary';
 
 export default function TrainerPage() {
   const dispatch = useAppDispatch();
@@ -24,7 +25,10 @@ export default function TrainerPage() {
         <Moves />
       </>
     :
-      <ActivateButton />
+      <>
+        <ActivateButton />
+        <Summary />
+      </>
     }
   </div>
 }

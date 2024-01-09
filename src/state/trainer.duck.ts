@@ -1,6 +1,6 @@
-import { createSlice, EnhancedStore, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from './store';
-import { addMove, resetCube, selectIsReachedTarget, selectMoves, setTarget, TimestampedMove } from './cube.duck';
+import { addMove, resetCube, selectIsReachedTarget, selectMoves, TimestampedMove } from './cube.duck';
 import { goToNextPrompt, goToPreviousPrompt, resetPrompt, selectCurrentPrompt } from './prompt.duck';
 import getCubeService from '../services/bluetooth-cube';
 

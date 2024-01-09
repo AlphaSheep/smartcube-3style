@@ -3,7 +3,7 @@ import { RootState } from './store';
 
 import { getSolvedState, applyMove, areStatesEqual, CubeState, applyCorner3Cycle, applyEdge3Cycle } from '../lib/cube/cube';
 import getCubeService from "../services/bluetooth-cube";
-import { getInverse3CycleForCurrentPrompt, selectCurrentPrompt } from './prompt.duck';
+import { getInverse3CycleForCurrentPrompt } from './prompt.duck';
 import { selectSelectedPieceType } from './settings.duck';
 import { selectTrainerActive } from './trainer.duck';
 

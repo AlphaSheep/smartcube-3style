@@ -1,10 +1,37 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { settingsSlice, settingsPersistenceMiddleware } from "./settings.duck";
-import { connectionSlice, connectionMiddleware, disconnectMiddleware } from "./connection.duck";
-import { addStateToSetTargetMiddleware, cubeSlice, ignoreMoveUnlessActiveMiddleware, initialiseCubeBluetoothCallback } from "./cube.duck";
-import { promptSlice, addSettingsToPromptResetMiddleware, setTargetOnPromptChangeMiddleware } from "./prompt.duck";
-import { addResultMiddleware, ignoreCommandUnlessActiveMiddleware, initialiseSkipRepeatCallbacks, resetOnSettingsChangeMiddleware, startTrainingMiddleware, trainerCheckCompleteMiddleware, trainerCheckSolvedMiddleware, trainerRepeatMiddleware, trainerSkipMiddleware, trainerSlice } from "./trainer.duck";
+import {
+  settingsSlice,
+  settingsPersistenceMiddleware
+} from "./settings.duck";
+import {
+  connectionSlice,
+  connectionMiddleware,
+  disconnectMiddleware
+} from "./connection.duck";
+import {
+  cubeSlice,
+  addStateToSetTargetMiddleware,
+  ignoreMoveUnlessActiveMiddleware,
+  initialiseCubeBluetoothCallback
+} from "./cube.duck";
+import {
+  promptSlice,
+  addSettingsToPromptResetMiddleware,
+  setTargetOnPromptChangeMiddleware
+} from "./prompt.duck";
+import {
+  addResultMiddleware,
+  ignoreCommandUnlessActiveMiddleware,
+  initialiseSkipRepeatCallbacks,
+  resetOnSettingsChangeMiddleware,
+  startTrainingMiddleware,
+  trainerCheckCompleteMiddleware,
+  trainerCheckSolvedMiddleware,
+  trainerRepeatMiddleware,
+  trainerSkipMiddleware,
+  trainerSlice
+} from "./trainer.duck";
 
 const store = configureStore({
   reducer: {

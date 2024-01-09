@@ -1,4 +1,3 @@
-import { log } from 'console';
 import { createBluetooth, BluetoothCube } from '../lib/bluetooth/bluetooth';
 
 type MoveReceivedCallback = (state: string, moves: string[], timestamps: [number, number], source: string) => void;

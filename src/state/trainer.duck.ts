@@ -133,16 +133,21 @@ export const trainerCheckSolvedMiddleware = (store: any) => (next: any) => (acti
   }
 }
 
-export const addResultMiddleware = (store: any) => (next: any) => (action: any) => {
-  console.log("addResultMiddleware", action.type);
+export const trainerCheckCompleteMiddleware = (store: any) => (next: any) => (action: any) => {
   next(action);
+  if (action.type === addSuccessResult.type || action.type === addSkippedResult.type) {
+    if (selectCurrentPrompt(store.getState()) === undefined) {
+      store.dispatch(endTraining());
+    }
+  }
+}
 
+export const addResultMiddleware = (store: any) => (next: any) => (action: any) => {
   if (action.type === addSuccessResult.type) {
-    console.log("Resetting after success result", action.payload);
-
     store.dispatch(resetCube());
     store.dispatch(goToNextPrompt());
   }
+  next(action);
 }
 
 export const resetOnSettingsChangeMiddleware = (store: any) => (next: any) => (action: any) => {

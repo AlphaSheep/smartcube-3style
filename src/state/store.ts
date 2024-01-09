@@ -2,9 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import { settingsSlice, settingsPersistenceMiddleware } from "./settings.duck";
 import { connectionSlice, connectionMiddleware, disconnectMiddleware } from "./connection.duck";
-import { addStateToSetTargetMiddleware, cubeSlice, initialiseCubeBluetoothCallback } from "./cube.duck";
+import { addStateToSetTargetMiddleware, cubeSlice, ignoreMoveUnlessActiveMiddleware, initialiseCubeBluetoothCallback } from "./cube.duck";
 import { promptSlice, addSettingsToPromptResetMiddleware, setTargetOnPromptChangeMiddleware } from "./prompt.duck";
-import { addResultMiddleware, resetOnSettingsChangeMiddleware, startTrainingMiddleware, trainerCheckSolvedMiddleware, trainerRepeatMiddleware, trainerSkipMiddleware, trainerSlice } from "./trainer.duck";
+import { addResultMiddleware, ignoreCommandUnlessActiveMiddleware, initialiseSkipRepeatCallbacks, resetOnSettingsChangeMiddleware, startTrainingMiddleware, trainerCheckCompleteMiddleware, trainerCheckSolvedMiddleware, trainerRepeatMiddleware, trainerSkipMiddleware, trainerSlice } from "./trainer.duck";
 
 const store = configureStore({
   reducer: {
@@ -16,21 +16,29 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
     settingsPersistenceMiddleware,
+    addSettingsToPromptResetMiddleware,
+    resetOnSettingsChangeMiddleware,
+    setTargetOnPromptChangeMiddleware,
+    addStateToSetTargetMiddleware,
+
     connectionMiddleware,
     disconnectMiddleware,
-    addSettingsToPromptResetMiddleware,
-    addStateToSetTargetMiddleware,
-    startTrainingMiddleware,
+
+    ignoreMoveUnlessActiveMiddleware,
+    ignoreCommandUnlessActiveMiddleware,
+
+    addResultMiddleware,
+    trainerCheckCompleteMiddleware,
     trainerRepeatMiddleware,
     trainerSkipMiddleware,
     trainerCheckSolvedMiddleware,
-    setTargetOnPromptChangeMiddleware,
-    addResultMiddleware,
-    resetOnSettingsChangeMiddleware,
+
+    startTrainingMiddleware,
   ),
 });
 
 initialiseCubeBluetoothCallback(store);
+initialiseSkipRepeatCallbacks(store);
 
 export default store;
 

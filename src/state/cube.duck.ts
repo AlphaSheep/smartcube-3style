@@ -5,6 +5,7 @@ import { getSolvedState, applyMove, areStatesEqual, CubeState, applyCorner3Cycle
 import getCubeService from "../services/bluetooth-cube";
 import { getInverse3CycleForCurrentPrompt, selectCurrentPrompt } from './prompt.duck';
 import { selectSelectedPieceType } from './settings.duck';
+import { selectTrainerActive } from './trainer.duck';
 
 // Type definitions
 export type Cube = {
@@ -54,10 +55,18 @@ export const cubeSlice = createSlice({
 export const { addMove, resetCube, setTarget } = cubeSlice.actions;
 
 // Middleware
+
+export const ignoreMoveUnlessActiveMiddleware = (store: any) => (next: any) => (action: any) => {
+  const isActive = selectTrainerActive(store.getState());
+  if (!isActive && action.type === addMove.type) {
+    return;
+  }
+  next(action);
+}
+
 export const addStateToSetTargetMiddleware = (store: any) => (next: any) => (action: any) => {
   if (action.type === setTarget.type) {
     const cycle = getInverse3CycleForCurrentPrompt(store.getState());
-    console.log("cycle", cycle);
 
     if (cycle) {
       const pieceType = selectSelectedPieceType(store.getState());

@@ -20,7 +20,7 @@ export default function TrainerPage() {
     {isActive ?
       <>
         <Prompt />
-        <Timer saveTime={undefined} />
+        <Timer />
         <Moves />
       </>
     :

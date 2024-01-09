@@ -28,6 +28,7 @@ const initialState: TrainerState = {
 export const selectTrainerState = (state: RootState) => state.trainer;
 export const selectTrainerActive = (state: RootState) => state.trainer.active;
 export const selectTrainerResults = (state: RootState) => state.trainer.results;
+export const selectTrainerLastPromptTime = (state: RootState) => state.trainer.lastPromptTime;
 
 // Slice
 export const trainerSlice = createSlice({

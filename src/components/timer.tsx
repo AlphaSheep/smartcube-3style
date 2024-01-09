@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from "react";
+import { useAppSelector } from "../state/hooks";
+import { selectTrainerLastPromptTime } from "../state/trainer.duck";
 
-export default function Timer({saveTime}) {
-  const [startTime, setStart] = useState(0);
+export default function Timer() {
+  const startTime = useAppSelector(selectTrainerLastPromptTime);
   const [time, setTime] = useState(0);
 
-  const [isRunning, setRunning] = useState(false);
-  const [isArmed, setArmed] = useState(false);
-
   const updateTime = () => {
-    setTime(Date.now() - startTime);
+    setTime(startTime? Date.now() - startTime : 0);
   }
 
   const getCurrentTimeString = () => {
@@ -18,45 +17,8 @@ export default function Timer({saveTime}) {
     return (time / 1000).toFixed(2);
   }
 
-  const onClick = () => {
-    if (isRunning) {
-      setRunning(false);
-      // saveTime(getCurrentTime());
-    } else {
-      setStart(Date.now());
-      setRunning(true);
-    }
-  }
-
-  const onKeyUp = (event) => {
-    if (isArmed && !isRunning && event.key === ' ') {
-      onClick();
-      setArmed(false);
-    }
-  }
-
-  const onKeyDown = (event) => {
-    if (event.key === ' ' && !event.repeat) {
-      if (isRunning) {
-        onClick();
-      } else {
-        setArmed(true);
-        setTime(0)
-      }
-    }
-  }
-
   useEffect(() => {
-    window.addEventListener('keyup', onKeyUp);
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keyup', onKeyUp);
-      window.removeEventListener('keydown', onKeyDown);
-    }
-  });
-
-  useEffect(() => {
-    if (isRunning) {
+    if (startTime) {
       const interval = setInterval(() => {
         updateTime();
       }, 30);
@@ -65,7 +27,7 @@ export default function Timer({saveTime}) {
   });
 
   return (
-    <div className="timer-card" onClick={onClick}>
+    <div className="timer-card">
       <p>{getCurrentTimeString()}</p>
     </div>);
 }

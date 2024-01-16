@@ -99,6 +99,14 @@ export const startTrainingMiddleware = (store: any) => (next: any) => (action: a
   if (action.type === startTraining.type) {
     store.dispatch(resetCube());
     store.dispatch(resetPrompt());
+    getCubeService().startWakeLock();
+  }
+  next(action);
+}
+
+export const endTrainingMiddleware = (store: any) => (next: any) => (action: any) => {
+  if (action.type === endTraining.type) {
+    getCubeService().stopWakeLock();
   }
   next(action);
 }

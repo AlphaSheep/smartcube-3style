@@ -17,6 +17,8 @@ class BluetoothCubeService {
   private _nextRepeatMoveIsInverse: boolean = false;
   private _nextRepeatFace: string = ' ';
 
+  private _wakeLock: WakeLockSentinel | null;
+
   constructor() {
     this.init();
   }
@@ -33,6 +35,23 @@ class BluetoothCubeService {
 
   async disconnect(): Promise<void> {
     await this._cube.stop();
+  }
+
+  async startWakeLock(): Promise<void> {
+    try {
+      this._wakeLock = await navigator.wakeLock.request('screen');
+    } catch (e) {
+      console.log('WakeLock not supported');
+      console.error(e);
+    }
+  }
+
+  async stopWakeLock(): Promise<void> {
+    if (this._wakeLock) {
+      this._wakeLock.release().then(() => {
+        this._wakeLock = null;
+      });
+    }
   }
 
   isConnected(): boolean {

@@ -22,6 +22,7 @@ import {
 } from "./prompt.duck";
 import {
   addResultMiddleware,
+  endTrainingMiddleware,
   ignoreCommandUnlessActiveMiddleware,
   initialiseSkipRepeatCallbacks,
   resetOnSettingsOrConnectionChangeMiddleware,
@@ -61,6 +62,7 @@ const store = configureStore({
     trainerCheckSolvedMiddleware,
 
     startTrainingMiddleware,
+    endTrainingMiddleware,
   ),
 });
 

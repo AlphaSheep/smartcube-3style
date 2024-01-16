@@ -119,18 +119,27 @@ function BufferSettings() {
 
 function LetterScheme() {
   const dispatch = useAppDispatch();
+  const [error, setError] = useState('');
 
   const letterScheme = useAppSelector(selectLetterScheme);
 
   const onUpdate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setLetterScheme(event.target.value));
+    const value = event.target.value;
+    if (value.length !== 24 || /\s/.test(value)) {
+      setError('Input must contain exactly 24 printable characters and no whitespace.');
+      dispatch(setLetterScheme(value));
+    } else {
+      setError('');
+      dispatch(setLetterScheme(value));
+    }
   }
 
   return <div className="letter-scheme">
     <label>
       Letter scheme
-      <input type="text" onChange={onUpdate} value={letterScheme}/>
+      <input type="text" onChange={onUpdate} value={letterScheme} />
     </label>
+    {error && <p className="error">{error}</p>}
   </div>;
 }
 

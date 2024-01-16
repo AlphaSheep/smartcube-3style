@@ -24,7 +24,7 @@ export default function Summary() {
             </tr>
           </thead>
           <tbody>
-            {sortedResults.map((result, index) => <tr>
+            {sortedResults.map((result, index) => <tr key={result.prompt}>
               <td>{result.prompt}</td>
               <td>{result.time ? formatTime(result.time) : "skipped"}</td>
               <td>{result.recognitionTime ? formatTime(result.recognitionTime) : "--"}</td>

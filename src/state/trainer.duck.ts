@@ -159,10 +159,10 @@ export const addResultMiddleware = (store: any) => (next: any) => (action: any) 
   next(action);
 }
 
-export const resetOnSettingsChangeMiddleware = (store: any) => (next: any) => (action: any) => {
+export const resetOnSettingsOrConnectionChangeMiddleware = (store: any) => (next: any) => (action: any) => {
   next(action);
-  if (action.type.startsWith('settings/')) {
-    store.dispatch(startTraining());
+  if (action.type.startsWith('settings/') || action.type.startsWith('connection/')) {
+    store.dispatch(resetTraining());
   }
 }
 

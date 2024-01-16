@@ -24,7 +24,7 @@ import {
   addResultMiddleware,
   ignoreCommandUnlessActiveMiddleware,
   initialiseSkipRepeatCallbacks,
-  resetOnSettingsChangeMiddleware,
+  resetOnSettingsOrConnectionChangeMiddleware,
   startTrainingMiddleware,
   trainerCheckCompleteMiddleware,
   trainerCheckSolvedMiddleware,
@@ -44,7 +44,7 @@ const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(
     settingsPersistenceMiddleware,
     addSettingsToPromptResetMiddleware,
-    resetOnSettingsChangeMiddleware,
+    resetOnSettingsOrConnectionChangeMiddleware,
     setTargetOnPromptChangeMiddleware,
     addStateToSetTargetMiddleware,
 

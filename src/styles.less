@@ -1,5 +1,134 @@
+@import "./styles/variables.less";
+@import "./styles/fonts.less";
+
 body {
-  background: #111;
-  color: #eee;
-  font-family: sans-serif;
+  background: @body-bg-color;
+  color: @body-text-color;
+  font-family: 'Rubik', sans-serif;
+  font-size: 14pt;
+  width: 100vw;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+
+  @media screen and (max-width: @mobile-screen) {
+    font-size: 11pt;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  a {
+    text-decoration: none;
+    color: @link-color;
+
+    &:hover {
+      color: @link-hover-color;
+    }
+  }
+
+  .header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    text-align: right;
+    height: 3em;
+    width: 100%;
+    padding: @spacing-large;
+    box-shadow: 0 0 1em #000;
+    border-bottom: 1px solid #000;
+
+    background: @float-bg-color;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding: @spacing-medium @spacing-large;
+
+    background-color: @float-bg-color;
+    border-top: 1px solid #000;
+    box-shadow: 0 0 1em #000;
+
+    span {
+      margin-left: @spacing-small;
+    }
+  }
+}
+
+.btn {
+  background: @btn-bg-color;
+  color: @btn-text-color;
+
+  font-family: 'Rubik', sans-serif;
+  font-size: large;
+  border: 1px solid @btn-border-color;
+  border-radius: 1em;
+
+  padding: @spacing-small @spacing-medium;
+  margin: @spacing-small;
+  cursor: pointer;
+  text-shadow: 0 1px 3px #000;
+
+  @media screen and (max-width: @mobile-screen) {
+    font-size: medium;
+  }
+
+  &.btn-large {
+    font-size: x-large;
+    padding: @spacing-small @spacing-large;
+  }
+
+  &.btn-default {
+    background: @btn-default-bg-color;
+    color: @btn-default-text-color;
+    border: 1px solid @btn-default-border-color;
+
+    &:hover {
+      background: @btn-default-bg-color-hover;
+    }
+  }
+
+  &.btn-primary {
+    background: @btn-primary-bg-color;
+    color: @btn-primary-text-color;
+    border: 1px solid @btn-primary-border-color;
+
+    &:hover {
+      background: @btn-primary-bg-color-hover;
+    }
+  }
+
+  &.btn-danger {
+    background: @btn-danger-bg-color;
+    color: @btn-danger-text-color;
+    border: 1px solid @btn-danger-border-color;
+
+    &:hover {
+      background: @btn-danger-bg-color-hover;
+    }
+  }
+}
+
+.digital {
+  font-family: 'Digital';
+  font-size: 4em;
+  color: @timer-color;
 }

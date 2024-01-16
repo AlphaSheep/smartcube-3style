@@ -1,0 +1,32 @@
+@import (reference) "../styles/variables.less";
+
+.summary {
+  padding: @spacing-medium;
+  max-height: 100%;
+  overflow: auto;
+  margin-bottom: @spacing-large;
+  padding-bottom: @spacing-large;
+
+  font-size: smaller;
+
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: @spacing-medium;
+
+    th, td {
+      padding: @spacing-small;
+      border: 1px solid @border-color;
+      text-align: left;
+    }
+
+    th {
+      background-color: @float-bg-color;
+    }
+
+    tr:nth-child(even) {
+      background-color: @float-bg-color;
+    }
+  }
+}

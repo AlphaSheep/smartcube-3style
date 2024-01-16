@@ -8,6 +8,8 @@ import Moves from './moves';
 import { selectTrainerActive, startTraining } from '../state/trainer.duck';
 import Summary from './summary';
 
+import './trainer.less';
+
 export default function TrainerPage() {
   const dispatch = useAppDispatch();
 

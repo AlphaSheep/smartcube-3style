@@ -28,6 +28,6 @@ export default function Timer() {
 
   return (
     <div className="timer-card">
-      <p>{getCurrentTimeString()}</p>
+      <p className="digital">{getCurrentTimeString()}</p>
     </div>);
 }

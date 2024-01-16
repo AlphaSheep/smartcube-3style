@@ -41,6 +41,11 @@ export const trainerSlice = createSlice({
       state.results = [];
       state.lastPromptTime = Date.now();
     },
+    resetTraining: (state) => {
+      state.active = false;
+      state.results = [];
+      state.lastPromptTime = undefined;
+    },
     endTraining: (state) => {
       state.active = false;
     },
@@ -74,10 +79,11 @@ export const trainerSlice = createSlice({
 // Actions
 export const {
   startTraining,
+  resetTraining,
   endTraining,
   addSuccessResult,
   addSkippedResult,
-  repeatResult
+  repeatResult,
 } = trainerSlice.actions;
 
 // Middleware
@@ -169,10 +175,7 @@ export const resetOnSettingsOrConnectionChangeMiddleware = (store: any) => (next
 // Initialisation
 export function initialiseSkipRepeatCallbacks(store: any) {
   const cubeService = getCubeService();
-  cubeService.setSkipCallback(() => {
-    store.dispatch(addSkippedResult());
-  });
-  cubeService.setRepeatCallback(() => {
-    store.dispatch(repeatResult());
-  });
+  cubeService.setSkipCallback(() => store.dispatch(addSkippedResult()));
+  cubeService.setRepeatCallback(() => store.dispatch(repeatResult()));
+  cubeService.setEndSessionCallback(() => store.dispatch(endTraining()));
 }

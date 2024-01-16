@@ -11,6 +11,7 @@ class BluetoothCubeService {
   private _moveCallback: MoveReceivedCallback;
   private _skipCallback: CommandCallback;
   private _repeatCallback: CommandCallback;
+  private _endSessionCallback: CommandCallback;
 
   private _repeatCounter: number = 0;
   private _nextRepeatMoveIsInverse: boolean = false;
@@ -62,6 +63,7 @@ class BluetoothCubeService {
     return (
       (this.checkForSkipOrRepeatForFace(move, 'U') && this._skipCallback()) ||
       (this.checkForSkipOrRepeatForFace(move, 'R') && this._repeatCallback()) ||
+      (this.checkForSkipOrRepeatForFace(move, 'L') && this._endSessionCallback()) ||
       false
     );
   }
@@ -108,6 +110,10 @@ class BluetoothCubeService {
 
   setRepeatCallback(callback: CommandCallback): void {
     this._repeatCallback = callback;
+  }
+
+  setEndSessionCallback(callback: CommandCallback): void {
+    this._endSessionCallback = callback;
   }
 }
 

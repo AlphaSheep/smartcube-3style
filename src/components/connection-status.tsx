@@ -2,6 +2,8 @@ import React from 'react';
 import { useAppSelector, useAppDispatch } from '../state/hooks';
 import { selectConnectionStatus, selectDeviceName, ConnectionStatus, connect, disconnect, selectIsConnected } from '../state/connection.duck';
 
+import './connection-status.less';
+
 export default function ConnectionStatusButton() {
   const dispatch = useAppDispatch();
 
@@ -17,22 +19,22 @@ export default function ConnectionStatusButton() {
     dispatch(disconnect());
   }
 
-  return <>
+  return <div className='connection-status'>
     {isConnected ?
       <>
         <span>Connected to {deviceName}</span>
-        <button onClick={onDisconnect}>Disconnect</button>
+        <button className='btn btn-danger' onClick={onDisconnect}>Disconnect</button>
       </>
       :
-        (connectionStatus === ConnectionStatus.Connecting) ?
-          <>
-            <span>Connecting...</span>
-          </>
+      (connectionStatus === ConnectionStatus.Connecting) ?
+        <>
+          <span>Connecting...</span>
+        </>
         :
-          <>
-            <button onClick={onConnect}>Connect</button>
-          </>
-     }
-  </>
+        <>
+          <button className='btn btn-primary' onClick={onConnect}>Connect</button>
+        </>
+    }
+  </div>
 
 }

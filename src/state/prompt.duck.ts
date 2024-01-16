@@ -102,10 +102,14 @@ export const promptSlice = createSlice({
       state.currentPromptIndex = 0;
     },
     goToNextPrompt: (state) => {
-      state.currentPromptIndex++;
+      if (state.currentPromptIndex < state.prompts.length) {
+        state.currentPromptIndex++;
+      }
     },
     goToPreviousPrompt: (state) => {
-      state.currentPromptIndex--;
+      if (state.currentPromptIndex > 0) {
+        state.currentPromptIndex--;
+      }
     },
   },
 });

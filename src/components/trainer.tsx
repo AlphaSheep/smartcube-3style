@@ -7,6 +7,7 @@ import Prompt from './prompt';
 import Moves from './moves';
 import { selectTrainerActive, startTraining } from '../state/trainer.duck';
 import Summary from './summary';
+import ProgressBar from './progress-bar';
 
 import './trainer.less';
 
@@ -22,6 +23,7 @@ export default function TrainerPage() {
   return <div className='trainer-page'>
     {isActive ?
       <>
+        <ProgressBar />
         <Prompt />
         <Timer />
         <Moves />

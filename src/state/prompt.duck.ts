@@ -86,6 +86,7 @@ const initialState: PromptState = {
 // Selectors
 export const selectPrompts = (state: RootState) => state.prompt.prompts;
 export const selectCurrentPromptIndex = (state: RootState) => state.prompt.currentPromptIndex;
+export const selectCountOfPrompts = (state: RootState) => state.prompt.prompts.length;
 export const selectCurrentPrompt = (state: RootState) =>
   selectPrompts(state)[selectCurrentPromptIndex(state)];
 

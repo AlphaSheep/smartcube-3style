@@ -1,0 +1,21 @@
+@import (reference) "../styles/variables.less";
+
+.progress-bar {
+  background-color: @progress-bar-bg-color;
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  .progress-indicator {
+    background-color: @progress-bar-fg-color;
+    border-radius: 4px;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: width 0.6s ease;
+    width: 0;
+  }
+}

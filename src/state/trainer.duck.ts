@@ -45,6 +45,9 @@ export const trainerSlice = createSlice({
       state.active = false;
     },
     addSuccessResult: (state, action: PayloadAction<TrainingResult>) => {
+      if (!state.active) {
+        return;
+      }
       state.results.push(action.payload);
       state.lastPromptTime = Date.now();
     },
@@ -52,10 +55,16 @@ export const trainerSlice = createSlice({
       if (!action.payload) {
         throw new Error('Skipped result must be provided');
       }
+      if (!state.active) {
+        return;
+      }
       state.results.push(action.payload);
       state.lastPromptTime = Date.now();
     },
     repeatResult: (state) => {
+      if (!state.active) {
+        return;
+      }
       state.results.pop();
       state.lastPromptTime = Date.now();
     },

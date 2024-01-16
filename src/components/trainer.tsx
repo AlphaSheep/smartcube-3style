@@ -34,11 +34,54 @@ export default function TrainerPage() {
 }
 
 function ActivateButton() {
+  const Ref: any = useRef(null);
+
   const dispatch = useAppDispatch();
 
-  const onClick = () => {
+  const COUNTDOWN_START_TIME = 3;
+
+  const [showCountdown, setShowCountDown] = useState(false);
+  const [time, setTime] = useState(COUNTDOWN_START_TIME);
+
+  const startCountDown = () => {
+    console.log('startCountDown');
+
+    setTime(COUNTDOWN_START_TIME);
+    setShowCountDown(true);
+    Ref.current = setInterval(timeoutCallback, 1000);
+  }
+
+  const endCountDown = () => {
+    console.log('endCountDown');
+
+    if (Ref.current) clearInterval(Ref.current);
+    setShowCountDown(false);
     dispatch(startTraining());
   }
 
-  return <button onClick={onClick}>Start</button>
+  const timeoutCallback = () => {
+    setTime((prevTime) => {
+      console.log(prevTime);
+      if (prevTime > 0) {
+        console.log('timeoutCallback', time);
+
+        return prevTime - 1;
+      } else {
+        endCountDown();
+        return COUNTDOWN_START_TIME;
+      }
+    });
+  }
+
+  return <div className='start-button-container'>
+    {showCountdown ?
+      <div className='countdown'>{time}</div>
+    :
+      <button
+      className='btn btn-primary btn-large'
+        onClick={startCountDown}
+      >Start</button>
+    }
+  </div>
 }
+

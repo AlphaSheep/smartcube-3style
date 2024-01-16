@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useAppSelector, useAppDispatch } from '../state/hooks';
 
 import Timer from './timer';
@@ -27,8 +27,10 @@ export default function TrainerPage() {
     :
       <>
         <ActivateButton />
+        <Instructions />
         <Summary />
       </>
+
     }
   </div>
 }
@@ -85,3 +87,10 @@ function ActivateButton() {
   </div>
 }
 
+function Instructions() {
+  return <div className='instructions'>
+    <p> U U' &times; 3 &nbsp;&nbsp; to skip to the next prompt. </p>
+    <p> R R' &times; 3 &nbsp;&nbsp; to redo to the previous prompt. </p>
+    <p> L L' &times; 3 &nbsp;&nbsp; to end the session. </p>
+  </div>
+}

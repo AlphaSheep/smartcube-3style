@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppSelector, useAppDispatch } from '../state/hooks';
 import {
   PieceType,
@@ -19,19 +19,24 @@ import {
 } from '../state/settings.duck';
 
 
-export default function Settings() {
+export default function Settings({ closeSettings }) {
   return <>
     <div className="container">
       <h1>Settings</h1>
     </div>
 
     <div className="settings-page">
-      <PieceTypeSelector/>
-      <IncludeInverses/>
-      <IncludeTwists/>
-      <BufferSettings/>
-      <LetterScheme/>
-      <SelectedLetters/>
+      <PieceTypeSelector />
+      <IncludeInverses />
+      {/* <IncludeTwists /> */}
+      <LetterScheme />
+      <BufferSettings />
+      <SelectedLetters />
+      <div className='settings-close-button'>
+        <button className='btn btn-primary'
+          onClick={closeSettings}>Done</button>
+
+      </div>
     </div>
   </>
 }
@@ -42,8 +47,8 @@ function PieceTypeSelector() {
   const pieceType = useAppSelector(selectSelectedPieceType);
   const availablePieceTypes = getAvailablePieceTypes();
 
-  const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setSelectedPieceType(event.target.value as PieceType));
+  const onChange = (piece: PieceType) => {
+    dispatch(setSelectedPieceType(piece));
   }
 
   return <div className="piece-type-selector">

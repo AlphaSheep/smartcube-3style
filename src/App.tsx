@@ -16,17 +16,22 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const isConnected = useAppSelector(selectIsConnected);
 
+  const closeSettings = () => setShowSettings(false);
+
   return <>
     <div className="header">
       <ConnectionStatusButton />
 
-      <button onClick={()=>{setShowSettings(!showSettings)}}>
+      <button
+        className='btn btn-default'
+        onClick={() => { setShowSettings(!showSettings) }}
+      >
         <FontAwesomeIcon icon={faGear} />
       </button>
     </div>
 
     <div className="container">
-      {showSettings ? <Settings /> : null}
+      {showSettings ? <Settings closeSettings={closeSettings} /> : null}
       {!isConnected && !showSettings ? <NotConnectedMessage /> : null}
       {isConnected && !showSettings ? <TrainerPage /> : null}
     </div>

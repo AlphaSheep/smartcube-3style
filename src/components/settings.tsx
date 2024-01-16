@@ -18,6 +18,7 @@ import {
   setSelectedPieceType
 } from '../state/settings.duck';
 
+import './settings.less';
 
 export default function Settings({ closeSettings }) {
   return <>
@@ -52,11 +53,15 @@ function PieceTypeSelector() {
   }
 
   return <div className="piece-type-selector">
-    <select value={pieceType} onChange={onChange}>
-      {availablePieceTypes.map((piece) => {
-        return <option key={piece} value={piece}>{piece}</option>
-      })}
-    </select>
+    {availablePieceTypes.map((piece) => {
+      return <button
+          className={piece === pieceType ? 'btn btn-primary' : 'btn btn-default'}
+          key={piece}
+          onClick={() => onChange(piece)}
+        >
+          {piece}
+        </button>
+    })}
   </div>;
 }
 
@@ -71,7 +76,7 @@ function IncludeInverses() {
 
   return <div className="include-inverses">
     <label>
-      <input type="checkbox" onChange={onUpdate} checked={includeInverses}/>
+      <input type="checkbox" onChange={onUpdate} checked={includeInverses} />
       Include inverses
     </label>
   </div>;
@@ -88,7 +93,7 @@ function IncludeTwists() {
 
   return <div className="include-twists">
     <label>
-      <input type="checkbox" onChange={onUpdate} checked={includeTwists}/>
+      <input type="checkbox" onChange={onUpdate} checked={includeTwists} />
       Include twists
     </label>
   </div>;

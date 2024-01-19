@@ -5,7 +5,7 @@ import Timer from './timer';
 import { resetPrompt } from '../state/prompt.duck';
 import Prompt from './prompt';
 import Moves from './moves';
-import { selectTrainerActive, startTraining } from '../state/trainer.duck';
+import { endTraining, selectTrainerActive, startTraining } from '../state/trainer.duck';
 import Summary from './summary';
 import ProgressBar from './progress-bar';
 
@@ -27,6 +27,7 @@ export default function TrainerPage() {
         <Prompt />
         <Timer />
         <Moves />
+        <StopButton />
       </>
     :
       <>
@@ -96,5 +97,20 @@ function Instructions() {
     <p> U U' &times; 3 &nbsp;&nbsp; to skip to the next prompt. </p>
     <p> R R' &times; 3 &nbsp;&nbsp; to redo to the previous prompt. </p>
     <p> L L' &times; 3 &nbsp;&nbsp; to end the session. </p>
+  </div>
+}
+
+function StopButton() {
+  const dispatch = useAppDispatch();
+
+  const stopTraining = () => {
+    dispatch(endTraining());
+  }
+
+  return <div className='stop-button-container'>
+    <button
+      className='btn btn-danger'
+      onClick={stopTraining}
+    >End</button>
   </div>
 }

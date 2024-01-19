@@ -4,6 +4,8 @@ import { useAppSelector } from "../state/hooks";
 import { TimestampedMove, selectMoves } from "../state/cube.duck";
 import { Move, simplifyAlg } from "../lib/cube/cube";
 
+import "./moves.less";
+
 const MAX_MOVES = 20;
 
 export default function Moves() {

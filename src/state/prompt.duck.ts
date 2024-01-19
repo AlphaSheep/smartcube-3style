@@ -47,13 +47,16 @@ export function generatePrompts(settings: TrainingSettings): string[] {
     )
   }).flat();
 
+  let uniquePrompts = prompts;
   if (includeInverses) {
     prompts.push(...prompts.map((prompt) =>
       prompt.split('').reverse().join(''))
     );
+    // Inverses introduce duplicates when more than one letter is selected
+    uniquePrompts = [...new Set(prompts)];
   }
 
-  return shuffle(prompts);
+  return shuffle(uniquePrompts);
 }
 
 export function getInverse3CycleForCurrentPrompt(state: RootState): [number, number, number] | undefined {

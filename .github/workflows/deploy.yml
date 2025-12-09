@@ -44,9 +44,9 @@ jobs:
           ANALYTICS_TAG: ${{ vars.ANALYTICS_TAG }}
         run: sed -i -e 's|<\/head>|'"$ANALYTICS_TAG"'</head>|' ./dist/index.html
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:          
+        uses: actions/upload-pages-artifact@v3
+        with:
           path: './dist'
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4

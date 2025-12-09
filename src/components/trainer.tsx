@@ -67,18 +67,14 @@ function ActivateButton() {
   }
 
   const timeoutCallback = () => {
-    setTime((prevTime) => {
-      console.log(prevTime);
-      if (prevTime > 0) {
-        console.log('timeoutCallback', time);
-
-        return prevTime - 1;
-      } else {
-        endCountDown();
-        return COUNTDOWN_START_TIME;
-      }
-    });
+    setTime((prevTime) => prevTime - 1);
   }
+
+  useEffect(() => {
+    if (showCountdown && time <= 0) {
+      endCountDown();
+    }
+  }, [showCountdown, time]);
 
   return <div className='start-button-container'>
     {showCountdown ?

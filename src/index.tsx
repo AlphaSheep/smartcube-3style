@@ -12,3 +12,13 @@ root.render(
     <App />
   </Provider>
 );
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(new URL("./service-worker.ts", import.meta.url))
+      .catch(() => {
+        // Ignore service worker registration errors
+      });
+  });
+}

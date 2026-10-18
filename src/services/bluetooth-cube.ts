@@ -67,6 +67,7 @@ class BluetoothCubeService {
       this.disconnect();
       return;
     }
+    console.log(state, moves, timestamps);
     if (moves.length > 0) {
       if (!this.checkForSkipOrRepeat(moves[0])) {
         return this._moveCallback(state, moves, timestamps, source);

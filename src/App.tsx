@@ -36,9 +36,7 @@ export default function App() {
       {isConnected && !showSettings ? <TrainerPage /> : null}
     </div>
 
-    <div className="footer">
-      <Footer />
-    </div>
+    <Footer />
   </>
 
 }

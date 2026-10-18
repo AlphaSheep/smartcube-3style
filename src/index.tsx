@@ -13,10 +13,10 @@ root.render(
   </Provider>
 );
 
-if ("serviceWorker" in navigator) {
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
-      .register(new URL("./service-worker.ts", import.meta.url))
+      .register(`${import.meta.env.BASE_URL}service-worker.js`)
       .catch(() => {
         // Ignore service worker registration errors
       });

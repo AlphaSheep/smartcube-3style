@@ -1,13 +1,13 @@
 {
   "configurations": [
       {
-          "command": "npm start",
-          "name": "Run npm start",
+          "command": "pnpm start",
+          "name": "Run pnpm start",
           "request": "launch",
           "type": "node-terminal"
       },
       {
-          "command": "npm test",
+          "command": "pnpm test",
           "name": "Run tests",
           "request": "launch",
           "type": "node-terminal"

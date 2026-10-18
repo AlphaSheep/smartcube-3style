@@ -1,11 +1,11 @@
 const CACHE_NAME = "threestyle-pwa-v1";
 
 self.addEventListener("install", () => {
-  (self as any).skipWaiting();
+  self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-  (event as any).waitUntil(
+  event.waitUntil(
     caches.keys().then((keys) =>
       Promise.all(
         keys
@@ -14,17 +14,17 @@ self.addEventListener("activate", (event) => {
       )
     )
   );
-  (self as any).clients.claim();
+  self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
-  const request = (event as any).request as Request;
+  const request = event.request;
 
   if (request.method !== "GET") {
     return;
   }
 
-  (event as any).respondWith(
+  event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       try {
         const networkResponse = await fetch(request);

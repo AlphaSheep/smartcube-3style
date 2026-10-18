@@ -1,11 +1,13 @@
 {
   "name": "threestyle",
   "version": "1.0.0",
+  "packageManager": "pnpm@12.11.2",
   "description": "",
   "scripts": {
-    "clean": "rm dist/bundle.js",
-    "start": "parcel src/index.html",
-    "build": "parcel build src/index.html --public-url https://smartcube-3style.sylvermyst.com",
+    "clean": "rm -rf dist",
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "test": "jest --coverage"
   },
   "babel": {
@@ -46,20 +48,19 @@
     "@babel/preset-env": "^7.23.8",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.23.3",
-    "@parcel/packager-raw-url": "^2.16.3",
-    "@parcel/transformer-less": "^2.16.3",
-    "@parcel/transformer-webmanifest": "^2.16.3",
     "@types/jest": "^30.0.0",
     "@types/react": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.2",
     "assert": "^2.1.0",
     "babel-jest": "^30.2.0",
     "buffer": "^6.0.3",
     "console-browserify": "^1.2.0",
     "jest": "^30.2.0",
     "jest-environment-jsdom": "^30.2.0",
-    "parcel": "^2.16.3",
+    "less": "^4.9.1",
     "prettier": "^3.7.4",
     "process": "^0.11.10",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "vite": "^8.3.4"
   }
 }

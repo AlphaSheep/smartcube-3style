@@ -48,9 +48,19 @@ function ActivateButton() {
   const COUNTDOWN_START_TIME = 3;
 
   const [showCountdown, setShowCountDown] = useState(false);
+  const [isLoadingFont, setIsLoadingFont] = useState(false);
   const [time, setTime] = useState(COUNTDOWN_START_TIME);
 
-  const startCountDown = () => {
+  const startCountDown = async () => {
+    if (isLoadingFont) return;
+    setIsLoadingFont(true);
+    try {
+      await document.fonts.load('1em Digital', '0123456789');
+    } catch (error) {
+      // Keep training available if the font cannot be downloaded.
+      console.warn('Could not load the timer font', error);
+    }
+    setIsLoadingFont(false);
     console.log('startCountDown');
 
     setTime(COUNTDOWN_START_TIME);
@@ -83,7 +93,8 @@ function ActivateButton() {
       <button
       className='btn btn-primary btn-large'
         onClick={startCountDown}
-      >Start</button>
+        disabled={isLoadingFont}
+      >{isLoadingFont ? 'Loading…' : 'Start'}</button>
     }
   </div>
 }

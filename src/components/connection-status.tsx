@@ -1,6 +1,6 @@
 import React from 'react';
 import { useAppSelector, useAppDispatch } from '../state/hooks';
-import { selectConnectionStatus, selectDeviceName, ConnectionStatus, connect, disconnect, selectIsConnected } from '../state/connection.duck';
+import { selectConnectionStatus, selectConnectionError, selectDeviceName, ConnectionStatus, connect, disconnect, selectIsConnected } from '../state/connection.duck';
 
 import './connection-status.less';
 
@@ -8,6 +8,7 @@ export default function ConnectionStatusButton() {
   const dispatch = useAppDispatch();
 
   const connectionStatus = useAppSelector(selectConnectionStatus);
+  const connectionError = useAppSelector(selectConnectionError);
   const deviceName = useAppSelector(selectDeviceName);
   const isConnected = useAppSelector(selectIsConnected);
 
@@ -32,6 +33,7 @@ export default function ConnectionStatusButton() {
         </>
         :
         <>
+          {connectionStatus === ConnectionStatus.Error && <span role='alert'>{connectionError}</span>}
           <button className='btn btn-primary' onClick={onConnect}>Connect</button>
         </>
     }

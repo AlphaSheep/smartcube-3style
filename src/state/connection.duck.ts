@@ -49,9 +49,9 @@ export const connectionSlice = createSlice({
       state.status = ConnectionStatus.Disconnected;
       state.deviceName = undefined;
     },
-    errored: (state, action: PayloadAction<Error>) => {
+    errored: (state, action: PayloadAction<string>) => {
       state.status = ConnectionStatus.Error;
-      state.error = action.payload.message;
+      state.error = action.payload;
     },
   },
 });
@@ -67,8 +67,8 @@ export const connectionMiddleware = (store: any) => (next: any) => (action: any)
     .then(() => {
       store.dispatch(connected());
     })
-    .catch((error: Error) => {
-      store.dispatch(errored(error));
+    .catch((error: unknown) => {
+      store.dispatch(errored(error instanceof Error ? error.message : String(error)));
     });
   }
 }
@@ -80,8 +80,8 @@ export const disconnectMiddleware = (store: any) => (next: any) => (action: any)
     .then(() => {
       store.dispatch(disconnected());
     })
-    .catch((error: Error) => {
-      store.dispatch(errored(error));
+    .catch((error: unknown) => {
+      store.dispatch(errored(error instanceof Error ? error.message : String(error)));
     });
   }
 }

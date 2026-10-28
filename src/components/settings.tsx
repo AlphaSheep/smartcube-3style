@@ -19,6 +19,10 @@ import {
 } from '../state/settings.duck';
 
 import './settings.less';
+import {faYoutube} from "@fortawesome/free-brands-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faInfo, faInfoCircle} from "@fortawesome/free-solid-svg-icons";
+import {getIndicesForSharedStickers, stickerToIndex} from "../lib/cube/cube";
 
 export default function Settings({ closeSettings }) {
   return <>
@@ -107,6 +111,7 @@ function BufferSettings() {
   const availableBuffers = getAvailableBuffers(pieceType);
 
   const onUpdate = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setSelectedLetters([]));
     dispatch(setBuffer(event.target.value));
   }
 
@@ -143,6 +148,9 @@ function LetterScheme() {
     <label>
       Letter scheme
       <input type="text" onChange={onUpdate} value={letterScheme} />
+      <div className="settings-hint">
+        <FontAwesomeIcon icon={faInfoCircle} />Alphabetical order follows Speffz
+      </div>
     </label>
     {error && <p className="error">{error}</p>}
   </div>;
@@ -153,7 +161,15 @@ function SelectedLetters() {
 
   const letterScheme = useAppSelector(selectLetterScheme);
   const selectedLetters = useAppSelector(selectSelectedLetters);
-  const availableLetters = letterScheme.split('');
+  const allLetters = letterScheme.split('');
+
+  const pieceType = useAppSelector(selectSelectedPieceType);
+  const buffer = useAppSelector(selectBuffer);
+  const bufferIndex = stickerToIndex(buffer, pieceType);
+  const bufferIndices = getIndicesForSharedStickers(bufferIndex, pieceType);
+  const availableLetters = allLetters.filter((_, index) =>
+    !bufferIndices.includes(index)
+  );
 
   const onUpdate = (event: React.ChangeEvent<HTMLSelectElement>) => {
     let selectedOptions: string[] = [];

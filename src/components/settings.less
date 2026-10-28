@@ -31,6 +31,10 @@
       border: 1px solid @border-color;
     }
 
+    select[multiple] {
+      height: 24em;
+    }
+
     input[type="text"] {
       width: 100%;
     }
@@ -69,6 +73,19 @@
 
     button {
       width: 50%;
+    }
+  }
+
+  .settings-hint {
+    margin-top: @spacing-small;
+    border : 1px solid @border-color-muted;
+    border-radius: @border-radius-base;
+    padding: 0.5em;
+    font-size: small;
+    color: @text-color-muted;
+
+    :first-child {
+      margin-right: 1em;
     }
   }
 
